@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blue Bird Real Estate</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Merriweather', serif;
+        color: #004b7c;
+      }
+      .navbar {
+        background-color: #ffffff;
+      }
+      .navbar-brand img {
+        height: 50px;
+      }
+      .hero {
+        background: linear-gradient(rgba(0,75,124,0.6), rgba(0,75,124,0.6)), url('https://images.unsplash.com/photo-1572120360610-d971b9f78849?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+        color: white;
+        text-align: center;
+        padding: 150px 20px;
+      }
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+      }
+      .btn-primary {
+        background-color: #004b7c;
+        border: none;
+      }
+      .btn-primary:hover {
+        background-color: #0066aa;
+      }
+      .property-card img {
+        width: 100%;
+        border-radius: 10px;
+      }
+      .property-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        background: #fff;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      .property-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+      .about {
+        padding: 80px 20px;
+      }
+      .contact {
+        background-color: #004b7c;
+        color: white;
+        padding: 80px 20px;
+      }
+      footer {
+        background-color: #aadeff;
+        color: white;
+        text-align: center;
+        padding: 30px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="#"><img src="logo.png" alt="Blue Bird Logo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#properties">Properties</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <h1>Find Your Dream Home with Blue Bird Real Estate</h1>
+      <p>Top-rated properties and trusted realtors across the USA.</p>
+      <a href="#properties" class="btn btn-primary mt-3">View Properties</a>
+    </section>
+
+    <section id="properties" class="container py-5">
+      <div class="text-center mb-5">
+        <h2>Featured Properties</h2>
+        <p>Explore our top listings available right now</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="property-card">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Modern Family House">
+            <h5 class="mt-3">Modern Family House</h5>
+            <p>Miami, FL</p>
+            <strong>$450,000</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="property-card">
+            <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80" alt="Luxury Villa">
+            <h5 class="mt-3">Luxury Villa</h5>
+            <p>Los Angeles, CA</p>
+            <strong>$1,200,000</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="property-card">
+            <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?auto=format&fit=crop&w=800&q=80" alt="Cozy Apartment">
+            <h5 class="mt-3">Cozy Apartment</h5>
+            <p>New York, NY</p>
+            <strong>$320,000</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about container text-center">
+      <h2>About Us</h2>
+      <p class="mt-4">At Blue Bird Real Estate, we help families find the perfect home through transparency, professionalism, and dedication. Our team of experienced agents provides top-tier real estate services across the United States, making your dream home a reality.</p>
+    </section>
+
+    <section id="contact" class="contact text-center">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <p class="mb-5">We'd love to hear from you. Get in touch with our team today.</p>
+        <form action="https://formspree.io/f/xgvndrpy" method="POST" class="row justify-content-center g-3">
+          <div class="col-md-5">
+            <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+          </div>
+          <div class="col-md-5">
+            <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+          </div>
+          <div class="col-md-10">
+            <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+          </div>
+          <div class="col-md-10">
+            <button type="submit" class="btn btn-light px-5">Send Inquiry</button>
+          </div>
+        </form>
+        <div class="mt-5">
+          <p>📍 New York, NY</p>
+          <p>📞 +1 (555) 123-4567</p>
+          <p>✉️ info@bluebirdrealestate.com</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <img src="logo.png" alt="Blue Bird Logo" height="50">
+      <p class="mt-3">© 2025 Blue Bird Real Estate. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
