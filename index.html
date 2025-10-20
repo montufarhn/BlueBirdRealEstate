@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- 
+      Para la funcionalidad de autocompletar direcciones en el formulario de venta, agrega tu API Key de Google Maps aquí.
+      <script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY_AQUI&libraries=places&callback=initAutocomplete" async defer></script> 
+    -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Blue Bird Real Estate</title>
@@ -78,6 +82,34 @@
         height: auto;
         z-index: -100;
       }
+      #sell-property {
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        border-radius: 15px;
+      }
+      .form-step {
+        display: none;
+      }
+      .form-step.active {
+        display: block;
+      }
+      .form-check-label {
+        margin-left: 0.5rem;
+      }
+      .form-check-input[type=radio] {
+        border-radius: 50%;
+      }
+      .progress {
+        height: 10px;
+      }
+      .form-check-input:checked {
+        background-color: #004b7c;
+        border-color: #004b7c;
+      }
+      #sell-property .btn-primary {
+        background-color: #004b7c;
+        border: none;
+      }
     </style>
   </head>
   <body>
@@ -141,6 +173,140 @@
       </div>
     </section>
 
+    <section id="sell-property" class="container py-5 my-5">
+      <div class="text-center mb-5">
+        <h2>Sell Your Property With Us</h2>
+        <p>Fill out the form.</p>
+      </div>
+
+      <div class="progress mb-4">
+        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+      <form id="sellPropertyForm">
+        <!-- Step 1: Property Type -->
+        <div class="form-step active" id="step-1">
+          <h5 class="mb-4 text-center">Step 1: What type of property do you have?</h5>
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="propertyType" id="singleFamily" value="Single Family">
+                <label class="form-check-label" for="singleFamily">Single Family</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="propertyType" id="duplex" value="Duplex">
+                <label class="form-check-label" for="duplex">Duplex</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="propertyType" id="condominium" value="Condominium">
+                <label class="form-check-label" for="condominium">Condominium</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="propertyType" id="townhouse" value="Townhouse">
+                <label class="form-check-label" for="townhouse">Townhouse</label>
+              </div>
+              <div class="invalid-feedback d-block text-center" id="step-1-error" style="display: none !important;">
+                Please select an option to continue.
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary next-step">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Urgency -->
+        <div class="form-step" id="step-2">
+          <h5 class="mb-4 text-center">Step 2: What is your level of urgency?</h5>
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="urgency" id="quickSale" value="Quick Sale (0-30 Days)">
+                <label class="form-check-label" for="quickSale">Quick Sale (0-30 Days)</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="urgency" id="canWait" value="I can Wait (30-60 Days)">
+                <label class="form-check-label" for="canWait">I can Wait (30-60 Days)</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="radio" name="urgency" id="browsing" value="Just browsing around (60-90 Days)">
+                <label class="form-check-label" for="browsing">Just browsing around (60-90 Days)</label>
+              </div>
+              <div class="invalid-feedback d-block text-center" id="step-2-error" style="display: none !important;">
+                Please select an option to continue.
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-secondary prev-step">Previous</button>
+            <button type="button" class="btn btn-primary next-step">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Reason for Selling -->
+        <div class="form-step" id="step-3">
+          <h5 class="mb-4 text-center">Step 3: What is your reason for selling?</h5>
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="divorce" value="Divorce"><label class="form-check-label" for="divorce">Divorce</label></div>
+              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="repairs" value="Property needs repairs"><label class="form-check-label" for="repairs">Property needs repairs</label></div>
+              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="inherited" value="Inherited"><label class="form-check-label" for="inherited">Inherited</label></div>
+              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="relocation" value="Relocation"><label class="form-check-label" for="relocation">Relocation</label></div>
+              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="foreclosure" value="Foreclosure"><label class="form-check-label" for="foreclosure">Foreclosure</label></div>
+              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="financial" value="Financial hardship"><label class="form-check-label" for="financial">Financial hardship</label></div>
+            </div>
+            <div class="invalid-feedback d-block text-center" id="step-3-error" style="display: none !important;">
+              Please select an option to continue.
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-secondary prev-step">Previous</button>
+            <button type="button" class="btn btn-primary next-step">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Property Address -->
+        <div class="form-step" id="step-4">
+          <h5 class="mb-4 text-center">Step 4: What is the property address?</h5>
+          <div class="row justify-content-center">
+            <div class="col-md-8">
+              <input type="text" id="property-address" name="address" class="form-control" placeholder="Enter property address" required>
+              <div class="invalid-feedback">Please fill out this field.</div>
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-secondary prev-step">Previous</button>
+            <button type="button" class="btn btn-primary next-step">Next</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Contact Info -->
+        <div class="form-step" id="step-5">
+          <h5 class="mb-4 text-center">Step 5: Enter your contact information</h5>
+          <div class="row justify-content-center g-3">
+            <div class="col-md-8"><input type="text" name="fullname" class="form-control" placeholder="Full Name" required></div>
+            <div class="col-md-8"><input type="email" name="email" class="form-control" placeholder="Email Address" required></div>
+            <div class="col-md-8"><input type="tel" name="phone" class="form-control" placeholder="Phone Number" required></div>
+            <div class="col-md-8 mt-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="smsconsent" value="true" id="smsConsent" required>
+                <label class="form-check-label" for="smsConsent" style="font-size: 0.8rem;">
+                  By submitting this form, you consent to receive text messages from HK Property Ventures, LLC ("513 Cash Buyers") for marketing and account notifications. Message frequency may vary. Msg and Data rates apply. Reply "STOP" to unsubscribe. Text HELP for support. Consent is not a condition of purchase. View Terms & Conditions and Privacy Policy.
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-secondary prev-step">Previous</button>
+            <button type="submit" class="btn btn-primary">Submit Offer Request</button>
+          </div>
+        </div>
+        <div id="form-feedback" class="text-center mt-4" style="display: none;">
+          <p class="fs-5"></p>
+        </div>
+      </form>
+    </section>
+
     <section id="about" class="about container text-center">
       <h2>About Us</h2>
       <p class="mt-4">At Blue Bird Real Estate, we help families find the perfect home through transparency, professionalism, and dedication. Our team of experienced agents provides top-tier real estate services across the United States, making your dream home a reality.</p>
@@ -180,5 +346,119 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const steps = Array.from(document.querySelectorAll('.form-step'));
+        const nextButtons = document.querySelectorAll('.next-step');
+        const prevButtons = document.querySelectorAll('.prev-step');
+        const progressBar = document.getElementById('progressBar');
+        const form = document.getElementById('sellPropertyForm');
+        const formFeedback = document.getElementById('form-feedback');
+        let currentStep = 0;
+
+        function updateProgress() {
+          const progress = ((currentStep + 1) / steps.length) * 100;
+          progressBar.style.width = `${progress}%`;
+          progressBar.setAttribute('aria-valuenow', progress);
+        }
+
+        function validateStep(stepIndex) {
+          const currentStepElement = steps[stepIndex];
+          const errorElement = document.getElementById(`step-${stepIndex + 1}-error`);
+          let isValid = true;
+
+          // Validar pasos con radio buttons (0, 1, 2)
+          if (stepIndex <= 2) {
+            const radioButtons = currentStepElement.querySelectorAll('input[type="radio"]');
+            const isChecked = Array.from(radioButtons).some(radio => radio.checked);
+            if (!isChecked) {
+              errorElement.style.display = 'block'; // Muestra el error
+              isValid = false;
+            } else {
+              errorElement.style.display = 'none'; // Oculta el error si ya está corregido
+            }
+          }
+
+          // Validar paso de dirección (índice 3)
+          if (stepIndex === 3) {
+            const addressInput = document.getElementById('property-address');
+            // Limpiar validación anterior
+            addressInput.classList.remove('is-invalid');
+
+            if (addressInput.value.trim() === '') {
+              addressInput.classList.add('is-invalid');
+              isValid = false;
+            }
+          }
+
+          return isValid;
+        }
+
+        nextButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            if (validateStep(currentStep) && currentStep < steps.length - 1) {
+              steps[currentStep].classList.remove('active');
+              currentStep++;
+              steps[currentStep].classList.add('active');
+              updateProgress();
+            }
+          });
+        });
+
+        prevButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            if (currentStep > 0) {
+              steps[currentStep].classList.remove('active');
+              currentStep--;
+              steps[currentStep].classList.add('active');
+              updateProgress();
+            }
+          });
+        });
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          // Aquí pegas la URL de tu script de Google
+          const scriptURL = 'https://script.google.com/macros/s/AKfycbw86xN67zWseKYguBx7xG4CBpNl-OriObQ4dCCnntxD26VUBnl6Uw4mqc4q5_Hk0w45kw/exec';
+          const submitButton = form.querySelector('button[type="submit"]');
+          const feedbackParagraph = formFeedback.querySelector('p');
+
+          submitButton.disabled = true;
+          submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+              console.log('Success!', response);
+              formFeedback.style.display = 'block';
+              feedbackParagraph.textContent = 'Thank you! Your request has been submitted successfully.';
+              feedbackParagraph.className = 'fs-5 text-success';
+              form.reset();
+              // Opcional: volver al primer paso
+              steps[currentStep].classList.remove('active');
+              currentStep = 0;
+              steps[currentStep].classList.add('active');
+              updateProgress();
+            })
+            .catch(error => {
+              console.error('Error!', error.message);
+              formFeedback.style.display = 'block';
+              feedbackParagraph.textContent = 'Oops! There was a problem submitting your form. Please try again later.';
+              feedbackParagraph.className = 'fs-5 text-danger';
+            })
+            .finally(() => {
+              submitButton.disabled = false;
+              submitButton.innerHTML = 'Submit Offer Request';
+            });
+        });
+      });
+
+      // Función para inicializar el autocompletado de Google Places.
+      // Se llama mediante el parámetro 'callback' en la URL del script de Google Maps.
+      function initAutocomplete() {
+        const input = document.getElementById('property-address');
+        const autocomplete = new google.maps.places.Autocomplete(input, { types: ['address'] });
+      }
+    </script>
   </body>
 </html>
