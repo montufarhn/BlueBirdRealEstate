@@ -106,6 +106,68 @@
         background-color: #004b7c;
         border: none;
       }
+
+      /* --- Estilos para botones de radio personalizados --- */
+      .form-check-input[type="radio"] {
+        display: none; /* Oculta el botón de radio original */
+      }
+
+      .form-check-label {
+        display: flex; /* Cambiado para centrar contenido */
+        align-items: center;
+        justify-content: center;
+        width: 160px; /* Ancho fijo para forma cuadrada */
+        height: 160px; /* Alto fijo para forma cuadrada */
+        padding: 1rem;
+        border: 2px solid rgba(0, 75, 124, 0.4); /* Borde con color del tema y transparencia */
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        background-color: transparent; /* Fondo transparente por defecto */
+        color: #004b7c; /* Texto azul oscuro para que contraste */
+        font-weight: 500;
+        margin-left: 0; /* Resetea el margen por defecto */
+      }
+
+      .form-check-label:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-color: #004b7c;
+      }
+
+      .form-check-input[type="radio"]:checked + .form-check-label {
+        background-color: rgba(0, 75, 124, 0.3); /* Fondo opaco al seleccionar */
+        color: #004b7c; /* Mantenemos el color del texto */
+        border-color: #004b7c; /* Borde sólido */
+      }
+
+      /* --- Estilos para alinear opciones horizontalmente --- */
+      #sell-property .form-step .options-container {
+        display: flex;
+        /* flex-wrap: wrap; */ /* Eliminado para forzar una sola línea */
+        justify-content: center; /* Centra los botones en el contenedor */
+        gap: 1rem; /* Espacio entre los botones */
+      }
+
+      #sell-property .form-step .options-container .form-check {
+        flex: none; /* Evita que los botones cambien de tamaño */
+        margin-bottom: 0 !important; /* Anula el margen de Bootstrap para usar 'gap' */
+      }
+
+      /* --- Estilos específicos para el checkbox del Step 5 --- */
+      #step-5 .form-check {
+        text-align: left; /* Alinea el checkbox y el texto a la izquierda */
+      }
+      #step-5 .form-check-label {
+        display: inline; /* Revierte a display normal */
+        width: auto;     /* Ancho automático */
+        height: auto;    /* Alto automático */
+        padding: 0;      /* Sin padding */
+        border: none;    /* Sin borde */
+        background-color: transparent; /* Fondo transparente */
+        color: #333;     /* Color de texto por defecto */
+        font-weight: normal; /* Peso de fuente normal */
+      }
     </style>
   </head>
   <body>
@@ -184,26 +246,26 @@
         <div class="form-step active" id="step-1">
           <h5 class="mb-4 text-center">Step 1: What type of property do you have?</h5>
           <div class="row justify-content-center">
-            <div class="col-md-8">
-              <div class="form-check mb-3">
+            <div class="col-md-8 options-container">
+              <div class="form-check">
                 <input class="form-check-input" type="radio" name="propertyType" id="singleFamily" value="Single Family">
                 <label class="form-check-label" for="singleFamily">Single Family</label>
               </div>
-              <div class="form-check mb-3">
+              <div class="form-check">
                 <input class="form-check-input" type="radio" name="propertyType" id="duplex" value="Duplex">
                 <label class="form-check-label" for="duplex">Duplex</label>
               </div>
-              <div class="form-check mb-3">
+              <div class="form-check">
                 <input class="form-check-input" type="radio" name="propertyType" id="condominium" value="Condominium">
                 <label class="form-check-label" for="condominium">Condominium</label>
               </div>
-              <div class="form-check mb-3">
+              <div class="form-check">
                 <input class="form-check-input" type="radio" name="propertyType" id="townhouse" value="Townhouse">
                 <label class="form-check-label" for="townhouse">Townhouse</label>
               </div>
-              <div class="invalid-feedback d-block text-center" id="step-1-error" style="display: none;">
-                Please select an option to continue.
-              </div>
+            </div>
+            <div class="invalid-feedback d-block text-center mt-3" id="step-1-error" style="display: none;">
+              Please select an option to continue.
             </div>
           </div>
           <div class="text-center mt-4">
@@ -215,43 +277,21 @@
         <div class="form-step" id="step-2">
           <h5 class="mb-4 text-center">Step 2: What is your level of urgency?</h5>
           <div class="row justify-content-center">
-            <div class="col-md-8">
-              <div class="form-check mb-3">
+            <div class="col-md-8 options-container">
+              <div class="form-check">
                 <input class="form-check-input" type="radio" name="urgency" id="quickSale" value="Quick Sale (0-30 Days)">
                 <label class="form-check-label" for="quickSale">Quick Sale (0-30 Days)</label>
               </div>
-              <div class="form-check mb-3">
+              <div class="form-check">
                 <input class="form-check-input" type="radio" name="urgency" id="canWait" value="I can Wait (30-60 Days)">
                 <label class="form-check-label" for="canWait">I can Wait (30-60 Days)</label>
               </div>
-              <div class="form-check mb-3">
+              <div class="form-check">
                 <input class="form-check-input" type="radio" name="urgency" id="browsing" value="Just browsing around (60-90 Days)">
                 <label class="form-check-label" for="browsing">Just browsing around (60-90 Days)</label>
               </div>
-              <div class="invalid-feedback d-block text-center" id="step-2-error" style="display: none;">
-                Please select an option to continue.
-              </div>
             </div>
-          </div>
-          <div class="text-center mt-4">
-            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-            <button type="button" class="btn btn-primary next-step">Next</button>
-          </div>
-        </div>
-
-        <!-- Step 3: Reason for Selling -->
-        <div class="form-step" id="step-3">
-          <h5 class="mb-4 text-center">Step 3: What is your reason for selling?</h5>
-          <div class="row justify-content-center">
-            <div class="col-md-8">
-              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="divorce" value="Divorce"><label class="form-check-label" for="divorce">Divorce</label></div>
-              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="repairs" value="Property needs repairs"><label class="form-check-label" for="repairs">Property needs repairs</label></div>
-              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="inherited" value="Inherited"><label class="form-check-label" for="inherited">Inherited</label></div>
-              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="relocation" value="Relocation"><label class="form-check-label" for="relocation">Relocation</label></div>
-              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="foreclosure" value="Foreclosure"><label class="form-check-label" for="foreclosure">Foreclosure</label></div>
-              <div class="form-check mb-3"><input class="form-check-input" type="radio" name="reason" id="financial" value="Financial hardship"><label class="form-check-label" for="financial">Financial hardship</label></div>
-            </div>
-            <div class="invalid-feedback d-block text-center" id="step-3-error" style="display: none;">
+            <div class="invalid-feedback d-block text-center mt-3" id="step-2-error" style="display: none;">
               Please select an option to continue.
             </div>
           </div>
@@ -260,7 +300,29 @@
             <button type="button" class="btn btn-primary next-step">Next</button>
           </div>
         </div>
-
+        
+        <!-- Step 3: Reason for Selling -->
+        <div class="form-step" id="step-3">
+          <h5 class="mb-4 text-center">Step 3: What is your reason for selling?</h5>
+          <div class="row justify-content-center">
+            <div class="col-md-8 options-container">
+              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="divorce" value="Divorce"><label class="form-check-label" for="divorce">Divorce</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="repairs" value="Property needs repairs"><label class="form-check-label" for="repairs">Property needs repairs</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="inherited" value="Inherited"><label class="form-check-label" for="inherited">Inherited</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="relocation" value="Relocation"><label class="form-check-label" for="relocation">Relocation</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="foreclosure" value="Foreclosure"><label class="form-check-label" for="foreclosure">Foreclosure</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="financial" value="Financial hardship"><label class="form-check-label" for="financial">Financial hardship</label></div>
+            </div>
+            <div class="invalid-feedback d-block text-center mt-3" id="step-3-error" style="display: none;">
+              Please select an option to continue.
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button type="button" class="btn btn-secondary prev-step">Previous</button>
+            <button type="button" class="btn btn-primary next-step">Next</button>
+          </div>
+        </div>
+        
         <!-- Step 4: Property Address -->
         <div class="form-step" id="step-4">
           <h5 class="mb-4 text-center">Step 4: What is the property address?</h5>
@@ -295,7 +357,7 @@
             <div class="col-md-8 mt-4">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="smsconsent" value="true" id="smsConsent" required >
-                <label class="form-check-label" for="smsConsent" style="font-size: 0.8rem;">
+                <label class="form-check-label" for="smsConsent">
                   By submitting this form, you consent to receive text messages from HK Property Ventures, LLC ("513 Cash Buyers") for marketing and account notifications. Message frequency may vary. Msg and Data rates apply. Reply "STOP" to unsubscribe. Text HELP for support. Consent is not a condition of purchase. View Terms & Conditions and Privacy Policy.
                 </label>
                 <div class="invalid-feedback">You must agree to the terms to continue.</div>
@@ -463,7 +525,7 @@
         const submitButton = form.querySelector('button[type="submit"]');
         submitButton.addEventListener('click', function(e) {
             e.preventDefault();
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbw86xN67zWseKYguBx7xG4CBpNl-OriObQ4dCCnntxD26VUBnl6Uw4mqc4q5_Hk0w45kw/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbz6pzpf-nGdkzbRpP-yLyR1dt9iaAzKv7wjDs76Xuk1eqOk_qgeo1gTzvvMa7YXza9-hw/exec';
             const feedbackParagraph = formFeedback.querySelector('p');
             if (!validateFinalStep()) { return; }
             submitButton.disabled = true;
