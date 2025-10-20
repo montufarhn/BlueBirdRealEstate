@@ -144,14 +144,22 @@
       /* --- Estilos para alinear opciones horizontalmente --- */
       #sell-property .form-step .options-container {
         display: flex;
-        /* flex-wrap: wrap; */ /* Eliminado para forzar una sola línea */
+        flex-wrap: wrap; /* Permite que los elementos se ajusten a la siguiente línea */
         justify-content: center; /* Centra los botones en el contenedor */
         gap: 1rem; /* Espacio entre los botones */
       }
 
+      /* En pantallas más grandes, alinear a la izquierda para un look de cuadrícula más limpio cuando hay wrapping */
+      @media (min-width: 768px) {
+        #step-3 .options-container {
+          justify-content: flex-start;
+        }
+      }
+
       #sell-property .form-step .options-container .form-check {
         flex: none; /* Evita que los botones cambien de tamaño */
-        margin-bottom: 0 !important; /* Anula el margen de Bootstrap para usar 'gap' */
+        /* margin-bottom se maneja mejor con gap, pero si es necesario, se puede dejar */
+        /* margin-bottom: 0 !important; */
       }
 
       /* --- Estilos específicos para el checkbox del Step 5 --- */
@@ -167,6 +175,14 @@
         background-color: transparent; /* Fondo transparente */
         color: #333;     /* Color de texto por defecto */
         font-weight: normal; /* Peso de fuente normal */
+      }
+
+      /* Media query para hacer los botones más pequeños en pantallas muy estrechas */
+      @media (max-width: 399px) {
+        .form-check-label {
+          width: 120px;
+          height: 120px;
+        }
       }
     </style>
   </head>
