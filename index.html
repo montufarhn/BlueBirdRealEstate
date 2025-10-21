@@ -434,7 +434,7 @@
       <div class="container">
         <h2>Contact Us</h2>
         <p class="mb-5">We'd love to hear from you. Get in touch with our team today.</p>
-        <form action="https://formspree.io/f/xgvndrpy" method="POST" class="row justify-content-center g-3">
+        <form id="contactForm" class="row justify-content-center g-3">
           <div class="col-md-5">
             <input type="text" name="name" class="form-control" placeholder="Full Name" required>
           </div>
@@ -442,12 +442,15 @@
             <input type="email" name="email" class="form-control" placeholder="Email Address" required>
           </div>
           <div class="col-md-10">
-            <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+            <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required style="color: #333;"></textarea>
           </div>
           <div class="col-md-10">
             <button type="submit" class="btn btn-light px-5">Send Inquiry</button>
           </div>
         </form>
+        <div id="contact-form-feedback" class="text-center mt-4" style="display: none;">
+          <p class="fs-5"></p>
+        </div>
         <div class="mt-5">
           <p>📍 New York, NY</p>
           <p>📞 +1 (402) 685-9146</p>
@@ -599,6 +602,36 @@
                 .finally(() => {
                     submitButton.disabled = false;
                     submitButton.innerHTML = 'Submit Offer Request';
+                });
+        });
+
+        // --- LÓGICA DEL FORMULARIO DE CONTACTO ---
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwY8pj5Rs6kOn4w0_D7ZMHstQI4eCm-UZ79pnmx8qvnNGJSHCpelAKLlBiDcnaJTZNIFg/exec'; // <-- ¡IMPORTANTE! Usa una URL de script diferente para este formulario.
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const feedbackElement = document.getElementById('contact-form-feedback');
+            const feedbackParagraph = feedbackElement.querySelector('p');
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(contactForm) })
+                .then(response => {
+                    feedbackElement.style.display = 'block';
+                    feedbackParagraph.textContent = 'Thank you! Your message has been sent successfully.';
+                    feedbackParagraph.className = 'fs-5 text-white';
+                    contactForm.reset();
+                })
+                .catch(error => {
+                    feedbackElement.style.display = 'block';
+                    feedbackParagraph.textContent = 'Oops! There was a problem sending your message. Please try again later.';
+                    feedbackParagraph.className = 'fs-5 text-danger';
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Send Inquiry';
                 });
         });
 
