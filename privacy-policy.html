@@ -18,8 +18,8 @@
     /* Estilos generales importados de index.html */
     body {
       font-family: 'Merriweather', serif;
-      background-color: #f8f9fa; /* Fondo claro para legibilidad */
-      color: #212529; /* Color de texto oscuro */
+      background-color: transparent; /* Fondo transparente para el video */
+      color: #ffffff; /* Color de texto blanco por defecto */
     }
     .navbar {
       background-color: #ffffff;
@@ -35,19 +35,30 @@
       background-color: #0066aa;
     }
     footer {
-      background-color: #ffffff;
-      color: #333;
+      background-color: transparent;
+      color: white;
       padding: 20px 0;
       border-top: 1px solid #e9ecef;
     }
+    #bg-video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -100;
+    }
     /* Estilos específicos para la página de política de privacidad */
     .policy-container {
-      background-color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.85); /* Fondo blanco con 85% de opacidad */
       border-radius: 15px;
       padding: 40px;
       margin-top: 40px;
       margin-bottom: 40px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      color: #212529; /* Color de texto oscuro para legibilidad dentro del cuadro */
     }
     .policy-container h1, .policy-container h2 {
       color: #004b7c;
@@ -62,6 +73,10 @@
   </style>
 </head>
 <body>
+  <video autoplay muted loop id="bg-video">
+    <source src="img/background.webm" type="video/webm">
+    Your browser does not support HTML5 video.
+  </video>
   <nav class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top">
     <div class="container">
       <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="Blue Bird Logo"></a>
