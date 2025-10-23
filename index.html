@@ -184,7 +184,7 @@
       }
 
       /* Corrige el color del checkbox de consentimiento al ser seleccionado para que la marca sea visible */
-      #step-5 .form-check-input:checked {
+      #step-5 .form-check-input:checked, #contact .form-check-input:checked {
         background-color: #004b7c; /* Color azul oscuro del tema */
         border-color: #004b7c;
       }
@@ -294,7 +294,7 @@
       <form id="sellPropertyForm">
         <!-- Step 1: Property Type -->
         <div class="form-step active" id="step-1">
-          <h5 class="mb-4 text-center">Step 1: What type of property do you have?</h5>
+          <h5 class="mb-4 text-center">Step 1: Select your property type</h5>
           <div class="row justify-content-center">
             <div class="col-md-8 options-container">
               <div class="form-check">
@@ -302,8 +302,8 @@
                 <label class="form-check-label" for="singleFamily">Single Family</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="propertyType" id="duplex" value="Duplex">
-                <label class="form-check-label" for="duplex">Duplex</label>
+                <input class="form-check-input" type="radio" name="propertyType" id="multiFamily" value="Multi Family">
+                <label class="form-check-label" for="multiFamily">Multi Family</label>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="propertyType" id="condominium" value="Condominium">
@@ -312,6 +312,10 @@
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="propertyType" id="townhouse" value="Townhouse">
                 <label class="form-check-label" for="townhouse">Townhouse</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="propertyType" id="vacantLand" value="Vacant Land">
+                <label class="form-check-label" for="vacantLand">Vacant Land</label>
               </div>
             </div>
             <div class="invalid-feedback d-block text-center mt-3" id="step-1-error" style="display: none;">
@@ -408,7 +412,7 @@
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="smsconsent" value="true" id="smsConsent" required >
                 <label class="form-check-label" for="smsConsent">
-                  By submitting this form, you consent to receive text messages from HK Property Ventures, LLC ("513 Cash Buyers") for marketing and account notifications. Message frequency may vary. Msg and Data rates apply. Reply "STOP" to unsubscribe. Text HELP for support. Consent is not a condition of purchase. View Terms & Conditions and Privacy Policy.
+                  By submitting this form, you consent to receive text messages from Las Locas, LLC DBA Blue Bird Real Estate for marketing and account notifications. Message frequency may vary. Msg and Data rates apply. Reply "STOP" to unsubscribe. Text HELP for support. Consent is not a condition of purchase. View Terms & Conditions and Privacy Policy.
                 </label>
                 <div class="invalid-feedback">You must agree to the terms to continue.</div>
               </div>
@@ -445,10 +449,19 @@
             <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required style="color: #333;"></textarea>
           </div>
           <div class="col-md-10">
+            <div class="form-check" style="text-align: left;">
+              <input class="form-check-input" type="checkbox" name="emailConsent" value="true" id="emailConsent" required>
+              <label class="form-check-label" for="emailConsent" style="display: inline; width: auto; height: auto; padding: 0; border: none; background-color: transparent; color: #ffffff; font-weight: normal;">
+                By checking this box, you consent to receive emails from Blue Bird Real Estate for marketing and informational purposes. You can unsubscribe at any time.
+              </label>
+              <div class="invalid-feedback">You must agree to the terms to continue.</div>
+            </div>
+          </div>
+          <div class="col-md-10">
             <button type="submit" class="btn btn-light px-5">Send Inquiry</button>
           </div>
         </form>
-        <div id="contact-form-feedback" class="text-center mt-4" style="display: none;">
+        <div id="contact-form-feedback" class="text-center mt-3" style="display: none;">
           <p class="fs-5"></p>
         </div>
         <div class="mt-5">
@@ -613,6 +626,21 @@
             const submitButton = contactForm.querySelector('button[type="submit"]');
             const feedbackElement = document.getElementById('contact-form-feedback');
             const feedbackParagraph = feedbackElement.querySelector('p');
+
+            // Validación del formulario de contacto
+            let isContactFormValid = true;
+            const consentCheckbox = document.getElementById('emailConsent');
+            consentCheckbox.classList.remove('is-invalid');
+            if (!consentCheckbox.checked) {
+                consentCheckbox.classList.add('is-invalid');
+                // Muestra el mensaje de error del checkbox
+                consentCheckbox.nextElementSibling.nextElementSibling.style.display = 'block';
+                isContactFormValid = false;
+            } else {
+                consentCheckbox.nextElementSibling.nextElementSibling.style.display = 'none';
+            }
+
+            if (!contactForm.checkValidity() || !isContactFormValid) { return; }
 
             submitButton.disabled = true;
             submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
