@@ -383,6 +383,9 @@
       <div id="properties-container" class="row g-4 justify-content-center">
         <!-- Las propiedades se cargarán aquí dinámicamente -->
       </div>
+      <div class="text-center mt-4" id="show-more-wrapper" style="display: none;">
+        <button id="show-more-btn" class="btn btn-primary">Show More &darr;</button>
+      </div>
     </section>
 
     <section id="about" class="about container text-center">
@@ -644,46 +647,57 @@
 
         // --- LÓGICA PARA CARGAR PROPIEDADES DESDE GOOGLE SHEETS ---
         function loadProperties() {
-          // IMPORTANTE: Aquí la URL aplicación web de Google Apps Script.
-          const propertiesApiUrl = 'https://script.google.com/macros/s/AKfycbzi4of0-tBD4-DZ0EBix2axdnA6Ssm4P0rJ9behrrGFSIEieEhDXCMkSaSifNhMFyih/exec'; 
+          const propertiesApiUrl = 'https://script.google.com/macros/s/AKfycbzi4of0-tBD4-DZ0EBix2axdnA6Ssm4P0rJ9behrrGFSIEieEhDXCMkSaSifNhMFyih/exec';
           const container = document.getElementById('properties-container');
+          const showMoreWrapper = document.getElementById('show-more-wrapper');
+          const showMoreBtn = document.getElementById('show-more-btn');
+          const propertiesPerLoad = 6;
+          let allProperties = [];
+          let propertiesShown = 0;
 
-          // Muestra un indicador de carga
           container.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading properties...</p></div>';
+
+          function renderProperties(properties) {
+            properties.forEach(prop => {
+              const priceValue = parseFloat(prop.price);
+              let formattedPrice;
+
+              if (!isNaN(priceValue)) {
+                formattedPrice = priceValue.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+              } else {
+                formattedPrice = prop.price;
+              }
+
+              const propertyCardHtml = `
+                <div class="col-md-4">
+                  <a href="${prop.zillowLink}" target="_blank" rel="noopener noreferrer" class="property-link">
+                    <div class="property-card">
+                      <img src="${prop.imageURL}" alt="Property at ${prop.address}">
+                      <p>${prop.address}</p>
+                      <strong>${formattedPrice}</strong>
+                    </div>
+                  </a>
+                </div>
+              `;
+              container.insertAdjacentHTML('beforeend', propertyCardHtml);
+            });
+          }
 
           fetch(propertiesApiUrl)
             .then(response => response.json())
             .then(data => {
-              container.innerHTML = ''; // Limpia el indicador de carga
+              container.innerHTML = '';
               if (data.properties && data.properties.length > 0) {
-                data.properties.forEach(prop => {
-                  // --- INICIO DE LA MODIFICACIÓN ---
-                  // Formatear el precio
-                  const priceValue = parseFloat(prop.price);
-                  let formattedPrice;
+                allProperties = data.properties;
+                const initialProperties = allProperties.slice(0, propertiesPerLoad);
+                renderProperties(initialProperties);
+                propertiesShown = initialProperties.length;
 
-                  if (!isNaN(priceValue)) {
-                    // Si es un número válido, lo formatea como moneda USD sin decimales.
-                    formattedPrice = priceValue.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
-                  } else {
-                    // Si no es un número (texto o celda vacía), muestra el valor original.
-                    formattedPrice = prop.price;
-                  }
-                  // --- FIN DE LA MODIFICACIÓN ---
-
-                  const propertyCardHtml = `
-                    <div class="col-md-4">
-                      <a href="${prop.zillowLink}" target="_blank" rel="noopener noreferrer" class="property-link">
-                        <div class="property-card">
-                          <img src="${prop.imageURL}" alt="Property at ${prop.address}">
-                          <p>${prop.address}</p>
-                          <strong>${formattedPrice}</strong>
-                        </div>
-                      </a>
-                    </div>
-                  `;
-                  container.insertAdjacentHTML('beforeend', propertyCardHtml);
-                });
+                if (allProperties.length > propertiesPerLoad) {
+                  showMoreWrapper.style.display = 'block';
+                } else {
+                  showMoreWrapper.style.display = 'none';
+                }
               } else {
                 container.innerHTML = '<div class="col-12 text-center"><p>No properties are currently available. Please check back later.</p></div>';
               }
@@ -692,7 +706,33 @@
               console.error('Error fetching properties:', error);
               container.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Could not load properties at this time. Please try again later.</p></div>';
             });
+
+          // Event listener para el botón "Show More" / "Show Less"
+          showMoreBtn.addEventListener('click', () => {
+            // Si se han mostrado todas las propiedades, el botón funciona como "Show Less"
+            if (propertiesShown >= allProperties.length) {
+              // 1. Limpia el contenedor
+              container.innerHTML = '';
+              // 2. Vuelve a renderizar solo las propiedades iniciales
+              const initialProperties = allProperties.slice(0, propertiesPerLoad);
+              renderProperties(initialProperties);
+              // 3. Resetea el contador de propiedades mostradas
+              propertiesShown = initialProperties.length;
+              // 4. Cambia el texto y la flecha del botón a "Show More"
+              showMoreBtn.innerHTML = 'Show More &darr;';
+            } else {
+              // Si aún hay propiedades por mostrar, el botón funciona como "Show More"
+              const nextProperties = allProperties.slice(propertiesShown, propertiesShown + propertiesPerLoad);
+              renderProperties(nextProperties);
+              propertiesShown += nextProperties.length;
+              // Si después de añadir estas, ya se muestran todas, cambia el texto y la flecha
+              if (propertiesShown >= allProperties.length) {
+                showMoreBtn.innerHTML = 'Show Less &uarr;';
+              }
+            }
+          });
         }
+
         loadProperties(); // Llama a la función para cargar las propiedades al iniciar la página.
       });
     </script>
