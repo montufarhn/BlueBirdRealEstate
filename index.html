@@ -52,6 +52,15 @@
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         background: white;
       }
+      .property-card .property-address {
+        font-size: 1.30rem; /* Aumentamos un poco más la fuente de la dirección */
+        font-weight: 500;
+        min-height: 50px; /* Asegura una altura mínima para consistencia */
+        margin-bottom: 0.05rem; /* Reduce el espacio debajo de la dirección */
+      }
+      .property-card .property-price {
+        font-size: 1rem; /* Reducimos ligeramente la fuente del precio */
+      }
       /* Estilo para el enlace de la tarjeta de propiedad */
       .property-link {
         text-decoration: none; /* Quita el subrayado del enlace */
@@ -673,8 +682,8 @@
                   <a href="${prop.zillowLink}" target="_blank" rel="noopener noreferrer" class="property-link">
                     <div class="property-card">
                       <img src="${prop.imageURL}" alt="Property at ${prop.address}">
-                      <p>${prop.address}</p>
-                      <strong>${formattedPrice}</strong>
+                      <p class="property-address">${prop.address}</p>
+                      <strong class="property-price">${formattedPrice}</strong>
                     </div>
                   </a>
                 </div>
