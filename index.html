@@ -380,52 +380,8 @@
         <h2>Featured Properties</h2>
         <p>Explore our top listings available right now</p>
       </div>
-      <div class="row g-4 justify-content-center">
-        <div class="col-md-4">
-          <a href="https://www.zillow.com/homedetails/2751-Cagle-St-Lithonia-GA-30058/14504266_zpid/" target="_blank" rel="noopener noreferrer" class="property-link">
-            <div class="property-card">
-              <img src="https://photos.zillowstatic.com/fp/ee81915631cfb2b880beaf12b51c5146-cc_ft_768.webp" alt="Property in Lithonia, GA">
-              <p>2751 Cagle St, Lithonia, GA 30058</p>
-              <strong>$130,000</strong>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="https://www.zillow.com/homedetails/200-S-3rd-St-Arma-KS-66712/77177144_zpid/" target="_blank" rel="noopener noreferrer" class="property-link">
-            <div class="property-card">
-              <img src="https://photos.zillowstatic.com/fp/28aa6f76790618094e5489265bb5768c-cc_ft_768.webp" alt="Property in Arma, KS">
-              <p>200 S 3rd St, Arma, KS 66712</p>
-              <strong>$67,000</strong>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="https://www.zillow.com/homedetails/8613-Georgetown-Rd-Roanoke-WV-26447/22679549_zpid/" target="_blank" rel="noopener noreferrer" class="property-link">
-            <div class="property-card">
-              <img src="https://photos.zillowstatic.com/fp/9603f8413421ccd239eb0e3d2ef9101d-uncropped_scaled_within_1536_1152.webp" alt="Property in Roanoke, WV">
-              <p>8613 Georgetown Rd, Roanoke, WV 26447</p>
-              <strong>$340,000</strong>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="https://www.zillow.com/homedetails/3548-E-King-Pl-Tulsa-OK-74115/22151132_zpid/" target="_blank" rel="noopener noreferrer" class="property-link"> <!-- Reemplaza '#' con tu enlace de Zillow -->
-            <div class="property-card">
-              <img src="https://photos.zillowstatic.com/fp/85ad4a912687d034d4809959255635ef-cc_ft_768.webp" alt="Property in Tulsa, OK">
-              <p>3548 E King Pl, Tulsa, OK 74115</p>
-              <strong>$125,000</strong>
-            </div>
-          </a>
-        </div>
-        <div class="col-md-4">
-          <a href="https://www.zillow.com/homedetails/0-Falls-Ferguson-Rd-30-Gastonia-NC-28052/456243058_zpid/" target="_blank" rel="noopener noreferrer" class="property-link"> <!-- Reemplaza '#' con tu enlace de Zillow -->
-            <div class="property-card">
-              <img src="https://photos.zillowstatic.com/fp/f65f63af93a5d284a0f9aa5a376dbd39-uncropped_scaled_within_1536_1152.webp" alt="Property in Gastonia, NC">
-              <p>0 Falls Ferguson Rd #30, Gastonia, NC 28052</p>
-              <strong>$10,000</strong>
-            </div>
-          </a>
-        </div>
+      <div id="properties-container" class="row g-4 justify-content-center">
+        <!-- Las propiedades se cargarán aquí dinámicamente -->
       </div>
     </section>
 
@@ -465,7 +421,6 @@
           <p class="fs-5"></p>
         </div>
         <div class="mt-5">
-          <p>📍 New York, NY</p>
           <p>📞 +1 (402) 685-9146</p>
           <p>✉️ info@bluebirdrealestate.com</p>
         </div>
@@ -686,6 +641,59 @@
                 }
             }
         });
+
+        // --- LÓGICA PARA CARGAR PROPIEDADES DESDE GOOGLE SHEETS ---
+        function loadProperties() {
+          // IMPORTANTE: Aquí la URL aplicación web de Google Apps Script.
+          const propertiesApiUrl = 'https://script.google.com/macros/s/AKfycbzi4of0-tBD4-DZ0EBix2axdnA6Ssm4P0rJ9behrrGFSIEieEhDXCMkSaSifNhMFyih/exec'; 
+          const container = document.getElementById('properties-container');
+
+          // Muestra un indicador de carga
+          container.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading properties...</p></div>';
+
+          fetch(propertiesApiUrl)
+            .then(response => response.json())
+            .then(data => {
+              container.innerHTML = ''; // Limpia el indicador de carga
+              if (data.properties && data.properties.length > 0) {
+                data.properties.forEach(prop => {
+                  // --- INICIO DE LA MODIFICACIÓN ---
+                  // Formatear el precio
+                  const priceValue = parseFloat(prop.price);
+                  let formattedPrice;
+
+                  if (!isNaN(priceValue)) {
+                    // Si es un número válido, lo formatea como moneda USD sin decimales.
+                    formattedPrice = priceValue.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+                  } else {
+                    // Si no es un número (texto o celda vacía), muestra el valor original.
+                    formattedPrice = prop.price;
+                  }
+                  // --- FIN DE LA MODIFICACIÓN ---
+
+                  const propertyCardHtml = `
+                    <div class="col-md-4">
+                      <a href="${prop.zillowLink}" target="_blank" rel="noopener noreferrer" class="property-link">
+                        <div class="property-card">
+                          <img src="${prop.imageURL}" alt="Property at ${prop.address}">
+                          <p>${prop.address}</p>
+                          <strong>${formattedPrice}</strong>
+                        </div>
+                      </a>
+                    </div>
+                  `;
+                  container.insertAdjacentHTML('beforeend', propertyCardHtml);
+                });
+              } else {
+                container.innerHTML = '<div class="col-12 text-center"><p>No properties are currently available. Please check back later.</p></div>';
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching properties:', error);
+              container.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Could not load properties at this time. Please try again later.</p></div>';
+            });
+        }
+        loadProperties(); // Llama a la función para cargar las propiedades al iniciar la página.
       });
     </script>
   </body>
