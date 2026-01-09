@@ -36,6 +36,8 @@
       }
       .property-card img {
         width: 100%;
+        height: 250px; /* Altura fija para alinear con los mapas */
+        object-fit: cover; /* Asegura que la imagen cubra el área sin deformarse */
         border-radius: 10px;
       }
       .property-card iframe {
@@ -683,7 +685,7 @@
                 formattedPrice = prop.price;
               }
 
-              let imageUrl = prop.imageURL || "";
+              let imageUrl = (prop.imageURL || "").trim();
               // Si el usuario pegó el código iframe completo de Google Maps, extraemos la URL src
               // Soporta comillas simples y dobles
               if (imageUrl.includes('<iframe')) {
