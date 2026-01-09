@@ -683,18 +683,19 @@
                 formattedPrice = prop.price;
               }
 
-              let imageUrl = prop.imageURL;
+              let imageUrl = prop.imageURL || "";
               // Si el usuario pegó el código iframe completo de Google Maps, extraemos la URL src
-              if (imageUrl && imageUrl.includes('<iframe')) {
-                const srcMatch = imageUrl.match(/src="([^"]+)"/);
+              // Soporta comillas simples y dobles
+              if (imageUrl.includes('<iframe')) {
+                const srcMatch = imageUrl.match(/src=["']([^"']+)["']/);
                 if (srcMatch && srcMatch[1]) {
                   imageUrl = srcMatch[1];
                 }
               }
 
               let mediaContent;
-              // Verifica si la URL es de Google Maps Embed para usar un iframe
-              if (imageUrl && imageUrl.includes('google.com/maps/embed')) {
+              // Verifica si la URL contiene "maps" y "embed" para identificar mapas interactivos
+              if (imageUrl.includes('maps') && imageUrl.includes('embed')) {
                 mediaContent = `<iframe src="${imageUrl}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
               } else {
                 mediaContent = `<img src="${imageUrl}" alt="Property at ${prop.address}">`;
