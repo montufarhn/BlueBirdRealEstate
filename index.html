@@ -686,6 +686,12 @@
               }
 
               let imageUrl = (prop.imageURL || "").trim();
+
+              // Limpieza robusta de la URL: quita comillas accidentales, corrige dobles ampersands y fuerza HTTPS
+              imageUrl = imageUrl.replace(/^["']|["']$/g, ''); 
+              imageUrl = imageUrl.replace(/&&/g, '&');
+              if (imageUrl.startsWith('http:')) imageUrl = imageUrl.replace('http:', 'https:');
+
               // Si el usuario pegó el código iframe completo de Google Maps, extraemos la URL src
               // Soporta comillas simples y dobles
               if (imageUrl.includes('<iframe')) {
@@ -700,7 +706,7 @@
               if (imageUrl.includes('maps') && imageUrl.includes('embed')) {
                 mediaContent = `<iframe src="${imageUrl}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
               } else {
-                mediaContent = `<img src="${imageUrl}" alt="Property at ${prop.address}">`;
+                mediaContent = `<img src="${imageUrl}" alt="Property at ${prop.address}" loading="lazy">`;
               }
 
               const propertyCardHtml = `
@@ -718,7 +724,8 @@
             });
           }
 
-          fetch(propertiesApiUrl)
+          // Agregamos un parámetro único (timestamp) para evitar la caché del navegador y cargar siempre datos frescos
+          fetch(`${propertiesApiUrl}?v=${new Date().getTime()}`)
             .then(response => response.json())
             .then(data => {
               container.innerHTML = '';
