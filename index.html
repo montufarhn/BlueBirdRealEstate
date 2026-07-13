@@ -1,782 +1,1139 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blue Bird Real Estate</title>
-    <link rel="icon" type="image/png" href="img/logo.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Merriweather', serif;
-        color: #ffffff;
-      }
-      .navbar {
-        background-color: #ffffff;
-      }
-      .navbar-brand img {
-        height: 50px;
-      }
-      .hero {
-        background: transparent;
-        color: white;
-        text-align: center;
-        padding: 150px 20px 50px; /* Reducido el padding inferior */
-      }
-      .hero h1 {
-        font-size: 3rem;
-        font-weight: 700;
-      }
-      .btn-primary {
-        background-color: #004b7c;
-        border: none;
-      }
-      .btn-primary:hover {
-        background-color: #0066aa;
-      }
-      .property-card img {
-        width: 100%;
-        height: 250px; /* Altura fija para alinear con los mapas */
-        object-fit: cover; /* Asegura que la imagen cubra el área sin deformarse */
-        border-radius: 10px;
-      }
-      .property-card iframe {
-        width: 100%;
-        height: 250px; /* Altura fija para el iframe de mapa */
-        border-radius: 10px;
-        border: none;
-      }
-      .property-card {
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        padding: 15px;
-        background: rgba(255, 255, 255, 0.9);
-        text-align: center;
-        color: #333; /* Color del texto para las tarjetas de propiedades */
-        transition: all 0.3s ease;
-      }
-      .property-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        background: white;
-      }
-      .property-card .property-address {
-        font-size: 1.30rem; /* Aumentamos un poco más la fuente de la dirección */
-        font-weight: 500;
-        min-height: 50px; /* Asegura una altura mínima para consistencia */
-        margin-bottom: 0.05rem; /* Reduce el espacio debajo de la dirección */
-      }
-      .property-card .property-price {
-        font-size: 1rem; /* Reducimos ligeramente la fuente del precio */
-      }
-      /* Estilo para el enlace de la tarjeta de propiedad */
-      .property-link {
-        text-decoration: none; /* Quita el subrayado del enlace */
-        color: inherit; /* Hereda el color del texto del padre */
-        display: block; /* Asegura que el enlace ocupe todo el espacio de la tarjeta */
-      }
-      .about {
-        padding: 80px 20px;
-        background: transparent;
-        color: white;
-      }
-      .contact {
-        background-color: #004b7c;
-        color: white;
-        padding: 80px 20px;
-      }
-      footer {
-        background-color: transparent;
-        color: white;
-        padding: 20px 0;
-        border-top: 1px solid #e9ecef;
-      }
-      #bg-video {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
-        z-index: -100;
-      }
-      #sell-property {
-        background: transparent;
-        color: white; /* Cambiado a blanco para visibilidad sobre el video */
-        border-radius: 15px;
-      }
-      .form-step {
-        display: none;
-      }
-      .form-step.active {
-        display: block;
-      }
-      .form-check-label {
-        margin-left: 0.5rem;
-      }
-      .form-check-input[type=radio] {
-        border-radius: 50%;
-      }
-      .progress {
-        height: 10px;
-      }
-      .form-check-input:checked {
-        background-color: #ffffff;
-        border-color: #ffffff;
-      }
-      #sell-property .btn-primary {
-        background-color: #004b7c;
-        border: none;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Bird Real Estate — We Buy Properties Across the USA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:    #0D1B2A;
+    --navy2:   #152336;
+    --sky:     #4A9ECA;
+    --sky-lt:  #7BBFE0;
+    --gold:    #E8A730;
+    --gold-dk: #C88C1A;
+    --white:   #F8F9FB;
+    --gray:    #6B7A8D;
+    --border:  #D4DCE8;
+    --radius:  10px;
+    --shadow:  0 4px 24px rgba(13,27,42,.10);
+  }
 
-      /* --- Estilos para botones de radio personalizados --- */
-      .form-check-input[type="radio"] {
-        display: none; /* Oculta el botón de radio original */
-      }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      .form-check-label {
-        display: flex; /* Cambiado para centrar contenido */
-        align-items: center;
-        justify-content: center;
-        width: 160px; /* Ancho fijo para forma cuadrada */
-        height: 160px; /* Alto fijo para forma cuadrada */
-        padding: 1rem;
-        border: 2px solid rgba(255, 255, 255, 0.4); /* Borde con color del tema y transparencia */
-        border-radius: 8px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-        background-color: transparent; /* Fondo transparente por defecto */
-        color: #ffffff; /* Texto azul oscuro para que contraste */
-        font-weight: 500;
-        margin-left: 0; /* Resetea el margen por defecto */
-      }
+  html { scroll-behavior: smooth; }
 
-      .form-check-label:hover {
-        background-color: rgba(255, 255, 255, 0.5);
-        border-color: #004b7c;
-      }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: transparent;
+    color: var(--navy);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+  }
+  .page-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .page-video-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(13,27,42,.78) 0%, rgba(22,37,58,.74) 50%, rgba(74,158,202,.70) 100%);
+    z-index: -1;
+    pointer-events: none;
+  }
 
-      .form-check-input[type="radio"]:checked + .form-check-label {
-        background-color: rgba(104, 195, 255, 0.3); /* Fondo opaco al seleccionar */
-        color: #ffffff; /* Mantenemos el color del texto */
-        border-color: #004b7c; /* Borde sólido */
-      }
+  /* ───── NAV ───── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 68px;
+    background: rgba(13,27,42,.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    transition: background .3s;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo img { width: 36px; height: 36px; object-fit: contain; }
+  .nav-logo span { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #fff; letter-spacing: .02em; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,.75); text-decoration: none; font-size: .875rem; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--sky-lt); }
+  .nav-cta {
+    background: var(--gold); color: var(--navy); border: none; cursor: pointer;
+    padding: 9px 20px; border-radius: 6px; font-size: .875rem; font-weight: 600;
+    text-decoration: none; transition: background .2s, transform .15s;
+  }
+  .nav-cta:hover { background: var(--gold-dk); transform: translateY(-1px); }
 
-      /* --- Estilos para alinear opciones horizontalmente --- */
-      #sell-property .form-step .options-container {
-        display: flex;
-        flex-wrap: wrap; /* Permite que los elementos se ajusten a la siguiente línea */
-        justify-content: center; /* Centra los botones en el contenedor */
-        gap: 1rem; /* Espacio entre los botones */
-      }
+  /* ───── HERO ───── */
+  #home {
+    min-height: 100vh;
+    background: linear-gradient(160deg, rgba(13,27,42,.80) 0%, rgba(26,58,88,.78) 45%, rgba(45,110,158,.78) 75%, rgba(74,158,202,.78) 100%);
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .hero-birds {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; overflow: hidden; z-index: 1;
+  }
+  .hero-birds svg { position: absolute; }
 
-      /* En pantallas más grandes, alinear a la izquierda para un look de cuadrícula más limpio cuando hay wrapping */
-      @media (min-width: 768px) {
-        #step-3 .options-container {
-          justify-content: flex-start;
-        }
-      }
+  /* Large anchor birds */
+  .hero-birds .b1  { top: 12%; left: 6%;   width: 180px; opacity: .22; animation: drift1  9s  ease-in-out infinite; }
+  .hero-birds .b2  { top: 18%; right: 8%;  width: 140px; opacity: .18; animation: drift2  12s ease-in-out infinite; }
+  .hero-birds .b3  { top: 55%; left: 3%;   width: 160px; opacity: .16; animation: drift3  10s ease-in-out infinite 1s; }
+  /* Medium birds */
+  .hero-birds .b4  { top: 28%; left: 35%;  width: 110px; opacity: .14; animation: drift1  14s ease-in-out infinite 2s; }
+  .hero-birds .b5  { top: 70%; right: 15%; width: 120px; opacity: .17; animation: drift2  11s ease-in-out infinite 3s; }
+  .hero-birds .b6  { top: 42%; right: 28%; width:  95px; opacity: .13; animation: drift3  16s ease-in-out infinite 1.5s; }
+  .hero-birds .b7  { top:  8%; left: 52%;  width: 100px; opacity: .15; animation: drift1  13s ease-in-out infinite 4s; }
+  /* Small distant birds */
+  .hero-birds .b8  { top: 32%; left: 18%;  width:  65px; opacity: .11; animation: drift2  18s ease-in-out infinite 0.5s; }
+  .hero-birds .b9  { top: 60%; left: 55%;  width:  55px; opacity: .10; animation: drift3  20s ease-in-out infinite 2s; }
+  .hero-birds .b10 { top: 80%; left: 28%;  width:  70px; opacity: .12; animation: drift1  15s ease-in-out infinite 3.5s; }
+  .hero-birds .b11 { top: 22%; left: 74%;  width:  50px; opacity: .09; animation: drift2  22s ease-in-out infinite 1s; }
+  .hero-birds .b12 { top: 75%; right: 40%; width:  80px; opacity: .11; animation: drift3  17s ease-in-out infinite 5s; }
 
-      #sell-property .form-step .options-container .form-check {
-        flex: none; /* Evita que los botones cambien de tamaño */
-        /* margin-bottom se maneja mejor con gap, pero si es necesario, se puede dejar */
-        /* margin-bottom: 0 !important; */
-      }
+  @keyframes drift1 {
+    0%,100% { transform: translate(0,    0)    rotate(-3deg) scaleX(1);   }
+    30%      { transform: translate(18px,-22px) rotate( 2deg) scaleX(1);   }
+    60%      { transform: translate(28px,-10px) rotate( 4deg) scaleX(1);   }
+  }
+  @keyframes drift2 {
+    0%,100% { transform: translate(0,    0)    rotate( 2deg) scaleX(1);   }
+    40%      { transform: translate(-20px,-18px) rotate(-4deg) scaleX(1);  }
+    70%      { transform: translate(-8px, -28px) rotate(-1deg) scaleX(1);  }
+  }
+  @keyframes drift3 {
+    0%,100% { transform: translate(0,   0)    rotate(-1deg) scaleX(1);    }
+    25%      { transform: translate(14px,-14px) rotate(3deg) scaleX(1);    }
+    50%      { transform: translate(22px,-24px) rotate(1deg) scaleX(1);    }
+    75%      { transform: translate(10px,-30px) rotate(-2deg) scaleX(1);   }
+  }
 
-      /* --- Estilos específicos para el checkbox del Step 5 --- */
-      #step-5 .form-check {
-        text-align: left; /* Alinea el checkbox y el texto a la izquierda */
-      }
-      #step-5 .form-check-label {
-        display: inline; /* Revierte a display normal */
-        width: auto;     /* Ancho automático */
-        height: auto;    /* Alto automático */
-        padding: 0;      /* Sin padding */
-        border: none;    /* Sin borde */
-        background-color: transparent; /* Fondo transparente */
-        color: #ffffff;     /* Color de texto cambiado a blanco */
-        font-weight: normal; /* Peso de fuente normal */
-      }
+  .hero-content { position: relative; max-width: 760px; z-index: 2; }
+  .hero-eyebrow {
+    display: inline-block; background: rgba(74,158,202,.18); border: 1px solid rgba(74,158,202,.35);
+    color: var(--sky-lt); font-size: .78rem; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; padding: 5px 14px; border-radius: 50px; margin-bottom: 1.5rem;
+  }
+  .hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    color: #fff; line-height: 1.15; margin-bottom: 1.2rem;
+    text-shadow: 0 2px 30px rgba(0,0,0,.3);
+  }
+  .hero-content h1 em { font-style: normal; color: var(--gold); }
+  .hero-content p {
+    font-size: 1.1rem; color: rgba(255,255,255,.72);
+    max-width: 560px; margin: 0 auto 2.5rem;
+  }
+  .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold); color: var(--navy); text-decoration: none;
+    padding: 14px 30px; border-radius: 8px; font-weight: 600; font-size: .95rem;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(232,167,48,.4);
+  }
+  .btn-primary:hover { background: var(--gold-dk); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(232,167,48,.5); }
+  .btn-secondary {
+    background: rgba(255,255,255,.1); color: #fff; text-decoration: none;
+    padding: 14px 30px; border-radius: 8px; font-weight: 600; font-size: .95rem;
+    border: 1px solid rgba(255,255,255,.25); transition: background .2s, transform .15s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,.18); transform: translateY(-2px); }
 
-      /* Corrige el color del checkbox de consentimiento al ser seleccionado para que la marca sea visible */
-      #step-5 .form-check-input:checked, #contact .form-check-input:checked {
-        background-color: #004b7c; /* Color azul oscuro del tema */
-        border-color: #004b7c;
-      }
+  /* trust bar */
+  .trust-bar {
+    background: var(--navy2);
+    padding: 1.1rem 5%;
+    display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+  }
+  .trust-item { display: flex; align-items: center; gap: .6rem; }
+  .trust-item span:first-child { font-size: 1.25rem; }
+  .trust-item strong { color: #fff; font-size: .85rem; }
+  .trust-item em { color: var(--gray); font-style: normal; font-size: .78rem; }
 
-      /* Media query para hacer los botones más pequeños en pantallas muy estrechas */
-      @media (max-width: 399px) {
-        .form-check-label {
-          width: 120px;
-          height: 120px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <video autoplay muted loop playsinline id="bg-video">
-      <source src="img/background.webm" type="video/webm">
-      Your browser does not support HTML5 video.
-    </video>
-    <nav class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top">
-      <div class="container">
-        <a class="navbar-brand" href="#"><img src="img/logo.png" alt="Blue Bird Logo"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#properties">Properties</a></li>
-            <li class="nav-item"><a class="nav-link" href="#sell-property">Sell With Us</a></li>
-            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          </ul>
+  /* ───── SECTIONS ───── */
+  section { padding: 90px 5%; }
+  .section-label {
+    font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--sky); margin-bottom: .6rem;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--navy); line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-sub { color: var(--gray); max-width: 560px; font-size: 1rem; margin-bottom: 2.5rem; }
+  .center { text-align: center; }
+  .center .section-sub { margin-left: auto; margin-right: auto; }
+
+  /* ───── SECTION BACKGROUNDS ───── */
+  section { position: relative; }
+  #sell-property, #properties, #about, #how, #contact {
+    background: transparent;
+  }
+  #sell-property { background: transparent; }
+  #sell-property h2, #sell-property .section-sub { color: #fff; }
+  #sell-property .section-sub { color: rgba(255,255,255,.6); }
+  #sell-property .section-label { color: var(--sky-lt); }
+
+  .form-shell {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px; max-width: 720px; margin: 0 auto;
+    padding: 2.5rem; backdrop-filter: blur(8px);
+  }
+
+  /* progress */
+  .progress-wrap { margin-bottom: 2rem; }
+  .progress-steps { display: flex; justify-content: space-between; position: relative; margin-bottom: .6rem; }
+  .progress-steps::before {
+    content:''; position: absolute; top: 50%; left: 0; right: 0; height: 2px;
+    background: rgba(255,255,255,.12); transform: translateY(-50%); z-index: 0;
+  }
+  .progress-fill {
+    position: absolute; top: 50%; left: 0; height: 2px;
+    background: var(--gold); transform: translateY(-50%); z-index: 1;
+    transition: width .4s ease;
+  }
+  .step-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .7rem; font-weight: 700; color: rgba(255,255,255,.4);
+    position: relative; z-index: 2; transition: all .3s;
+  }
+  .step-dot.active { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+  .step-dot.done { background: var(--sky); border-color: var(--sky); color: #fff; }
+  .progress-label { color: rgba(255,255,255,.45); font-size: .75rem; text-align: right; }
+
+  /* form steps */
+  .form-step { display: none; }
+  .form-step.active { display: block; animation: fadeUp .35s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  .step-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #fff; margin-bottom: 1.5rem; }
+
+  /* pill options */
+  .pill-grid { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: 1.5rem; }
+  .pill-option { display: none; }
+  .pill-option + label {
+    padding: 10px 18px; border-radius: 50px;
+    border: 1.5px solid rgba(255,255,255,.2); color: rgba(255,255,255,.7);
+    font-size: .875rem; cursor: pointer; transition: all .2s; user-select: none;
+    background: rgba(255,255,255,.04);
+  }
+  .pill-option:checked + label {
+    background: var(--gold); border-color: var(--gold); color: var(--navy); font-weight: 600;
+  }
+  .pill-option + label:hover { border-color: var(--sky-lt); color: #fff; }
+
+  /* text inputs */
+  .form-input {
+    width: 100%; padding: 13px 16px;
+    background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.15);
+    border-radius: var(--radius); color: #fff; font-size: .95rem; font-family: 'Inter', sans-serif;
+    outline: none; transition: border-color .2s; margin-bottom: .9rem;
+  }
+  .form-input::placeholder { color: rgba(255,255,255,.35); }
+  .form-input:focus { border-color: var(--sky); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+
+  /* consent */
+  .consent-wrap { margin: 1rem 0 1.5rem; }
+  .consent-wrap label { display: flex; gap: .6rem; font-size: .78rem; color: rgba(255,255,255,.5); cursor: pointer; align-items: flex-start; line-height: 1.5; }
+  .consent-wrap input[type=checkbox] { margin-top: 3px; accent-color: var(--gold); flex-shrink: 0; }
+  .consent-wrap a { color: var(--sky-lt); }
+
+  /* nav buttons */
+  .form-nav { display: flex; gap: 1rem; margin-top: 1.2rem; }
+  .btn-back {
+    background: transparent; border: 1.5px solid rgba(255,255,255,.2); color: rgba(255,255,255,.6);
+    padding: 12px 22px; border-radius: 8px; font-size: .875rem; font-weight: 600;
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-back:hover { border-color: rgba(255,255,255,.5); color: #fff; }
+  .btn-next {
+    background: var(--gold); color: var(--navy); border: none;
+    padding: 12px 28px; border-radius: 8px; font-size: .9rem; font-weight: 700;
+    cursor: pointer; transition: all .2s; flex: 1;
+  }
+  .btn-next:hover { background: var(--gold-dk); transform: translateY(-1px); }
+
+  /* success */
+  .form-success { display: none; text-align: center; padding: 1rem 0; }
+  .form-success .check { font-size: 3rem; margin-bottom: 1rem; }
+  .form-success h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #fff; margin-bottom: .5rem; }
+  .form-success p { color: rgba(255,255,255,.6); }
+
+  /* ───── PROPERTIES ───── */
+  #properties { background: var(--white); }
+  .prop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .prop-card {
+    background: #fff; border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow); transition: transform .25s, box-shadow .25s;
+    border: 1px solid var(--border);
+  }
+  .prop-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(13,27,42,.14); }
+  .prop-img {
+    width: 100%; height: 190px; object-fit: cover;
+    background: linear-gradient(135deg, #c9d8e8, #e8eef5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; color: rgba(74,158,202,.4);
+  }
+  .prop-img-link { display: block; text-decoration: none; }
+  .prop-img-link .prop-img { display: block; }
+  .prop-body { padding: 1.2rem; }
+  .prop-badge {
+    display: inline-block; background: rgba(74,158,202,.12); color: var(--sky);
+    font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 50px; margin-bottom: .6rem;
+  }
+  .prop-title { font-weight: 600; font-size: 1rem; color: var(--navy); margin-bottom: .3rem; }
+  .prop-addr { font-size: .82rem; color: var(--gray); margin-bottom: .9rem; }
+  .prop-price { font-size: 1.25rem; font-weight: 700; color: var(--navy); }
+  .prop-meta { display: flex; gap: 1rem; margin-top: .5rem; font-size: .78rem; color: var(--gray); }
+  .properties-actions { margin-top: 1.5rem; display: flex; justify-content: center; }
+  .btn-see-more {
+    background: var(--navy); color: #fff; border: none; padding: 12px 24px;
+    border-radius: 8px; font-size: .9rem; font-weight: 600; cursor: pointer;
+    transition: background .2s, transform .15s;
+  }
+  .btn-see-more:hover { background: var(--navy2); transform: translateY(-1px); }
+
+  /* ───── ABOUT ───── */
+  #about { background: var(--white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-visual {
+    background: linear-gradient(135deg, #152336 0%, #2d6e9e 100%);
+    border-radius: 16px; padding: 3rem; display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .stat-item { border-left: 3px solid var(--gold); padding-left: 1.2rem; }
+  .stat-item .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #fff; }
+  .stat-item .stat-label { font-size: .82rem; color: rgba(255,255,255,.55); }
+  .about-text p { color: var(--gray); margin-bottom: 1rem; font-size: .95rem; }
+  .about-bullets { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: .7rem; }
+  .about-bullets li { display: flex; align-items: center; gap: .7rem; font-size: .9rem; color: var(--navy); }
+  .about-bullets li::before { content: '✓'; color: var(--sky); font-weight: 700; }
+
+  /* ───── HOW IT WORKS ───── */
+  #how { background: #EEF4FA; }
+  .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+  .how-card { text-align: center; }
+  .how-num {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--navy); color: var(--gold); font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .how-card h3 { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: .4rem; }
+  .how-card p { font-size: .875rem; color: var(--gray); }
+
+  /* ───── CONTACT ───── */
+  #contact { background: var(--white); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+  .contact-card {
+    display: flex; align-items: center; gap: 1rem;
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.2rem; box-shadow: var(--shadow);
+  }
+  .contact-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--navy); display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .contact-card strong { display: block; font-size: .75rem; color: var(--gray); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 2px; }
+  .contact-card a, .contact-card span { color: var(--navy); font-weight: 600; font-size: .95rem; text-decoration: none; }
+  .contact-form .form-input { background: #fff; border-color: var(--border); color: var(--navy); }
+  .contact-form .form-input::placeholder { color: #aab; }
+  .contact-form .form-input:focus { border-color: var(--sky); }
+  .contact-form textarea.form-input { height: 120px; resize: vertical; }
+  .contact-consent { font-size: .78rem; color: var(--gray); margin-bottom: 1rem; }
+  .contact-consent label { display: flex; gap: .5rem; align-items: flex-start; cursor: pointer; }
+  .contact-consent input { margin-top: 3px; accent-color: var(--sky); }
+  .contact-consent a { color: var(--sky); }
+  .btn-contact {
+    background: var(--navy); color: #fff; border: none;
+    padding: 13px 28px; border-radius: 8px; font-size: .9rem; font-weight: 600;
+    cursor: pointer; transition: all .2s; width: 100%;
+  }
+  .btn-contact:hover { background: var(--navy2); transform: translateY(-1px); }
+
+  /* ───── FOOTER ───── */
+  footer {
+    background: var(--navy); color: rgba(255,255,255,.5);
+    padding: 2rem 5%; text-align: center; font-size: .8rem;
+  }
+  footer a { color: var(--sky-lt); }
+  .footer-logo { display: flex; align-items: center; gap: .7rem; font-family: 'Playfair Display', serif; color: #fff; font-size: 1rem; margin-bottom: .4rem; }
+  .footer-logo img { width: 32px; height: 32px; object-fit: contain; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .trust-bar { gap: 1.5rem; }
+    .form-shell { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+  <video class="page-video" autoplay muted loop playsinline preload="auto">
+    <source src="img/background.webm" type="video/webm">
+  </video>
+  <div class="page-video-overlay"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#home">
+    <img src="img/logo.png" alt="Blue Bird Real Estate" />
+    <span>Blue Bird Real Estate</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#properties">Properties</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="#sell-property">Get My Offer →</a>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <source src="img/background.webm" type="video/webm">
+  </video>
+  <div class="hero-birds">
+    <!-- Large birds -->
+    <svg class="b1" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+    <svg class="b2" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+    <svg class="b3" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+    <!-- Medium birds -->
+    <svg class="b4" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#7BBFE0"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#7BBFE0"/></svg>
+    <svg class="b5" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+    <svg class="b6" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#7BBFE0"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#7BBFE0"/></svg>
+    <svg class="b7" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+    <!-- Small distant birds -->
+    <svg class="b8"  viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+    <svg class="b9"  viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#7BBFE0"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#7BBFE0"/></svg>
+    <svg class="b10" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+    <svg class="b11" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#7BBFE0"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#7BBFE0"/></svg>
+    <svg class="b12" viewBox="0 0 100 50" fill="none"><path d="M50 28 Q35 10 10 16 Q28 22 38 32 Q44 36 50 28Z" fill="#fff"/><path d="M50 28 Q65 10 90 16 Q72 22 62 32 Q56 36 50 28Z" fill="#fff"/></svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Trusted Nationwide Since 2020</div>
+    <h1>We Buy Houses <em>Fast,</em><br>Any Condition</h1>
+    <p>Skip the showings, repairs, and months of waiting. Blue Bird makes you a fair cash offer and closes on your schedule — in as little as 7 days.</p>
+    <div class="hero-buttons">
+      <a href="#sell-property" class="btn-primary">Get My Free Cash Offer</a>
+      <a href="#properties" class="btn-secondary">View Properties</a>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span>🏠</span><div><strong>100+</strong> <em>Homes Purchased</em></div></div>
+  <div class="trust-item"><span>⚡</span><div><strong>7-Day</strong> <em>Close Possible</em></div></div>
+  <div class="trust-item"><span>💵</span><div><strong>Cash</strong> <em>Offers, No Fees</em></div></div>
+  <div class="trust-item"><span>🗺️</span><div><strong>50 States</strong> <em>Nationwide Service</em></div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="center">
+    <div class="section-label">Simple Process</div>
+    <h2>Sell Your Home in 3 Easy Steps</h2>
+    <p class="section-sub">No repairs. No agent commissions. No open houses. Just a fair offer and a fast close.</p>
+  </div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">1</div>
+      <h3>Tell Us About Your Property</h3>
+      <p>Fill out our quick form with your address and a few details. Takes less than 2 minutes.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">2</div>
+      <h3>Receive Your Cash Offer</h3>
+      <p>We'll review your property and send a no-obligation cash offer within 24 hours.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">3</div>
+      <h3>Close on Your Timeline</h3>
+      <p>Choose your closing date — as fast as 7 days or whenever works best for you.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">4</div>
+      <h3>Get Paid, Move On</h3>
+      <p>Receive your cash at closing. No waiting, no surprises, no commissions deducted.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SELL FORM -->
+<section id="sell-property">
+  <div class="center">
+    <div class="section-label">Get Your Offer</div>
+    <h2>What's Your Property Worth?</h2>
+    <p class="section-sub">Fill out the form below and we'll send your free cash offer within 24 hours.</p>
+  </div>
+
+  <div class="form-shell">
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-steps">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        <div class="step-dot active" id="dot-1">1</div>
+        <div class="step-dot" id="dot-2">2</div>
+        <div class="step-dot" id="dot-3">3</div>
+        <div class="step-dot" id="dot-4">4</div>
+        <div class="step-dot" id="dot-5">5</div>
+      </div>
+      <div class="progress-label" id="progress-label">Step 1 of 5</div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="form-step active" id="step-1">
+      <div class="step-title">What type of property are you selling?</div>
+      <div class="pill-grid">
+        <input type="radio" name="propertyType" id="pt1" class="pill-option" value="Single Family">
+        <label for="pt1">🏠 Single Family</label>
+        <input type="radio" name="propertyType" id="pt2" class="pill-option" value="Multi Family">
+        <label for="pt2">🏘️ Multi Family</label>
+        <input type="radio" name="propertyType" id="pt3" class="pill-option" value="Condominium">
+        <label for="pt3">🏢 Condo</label>
+        <input type="radio" name="propertyType" id="pt4" class="pill-option" value="Townhouse">
+        <label for="pt4">🏗️ Townhouse</label>
+        <input type="radio" name="propertyType" id="pt5" class="pill-option" value="Vacant Land">
+        <label for="pt5">🌿 Vacant Land</label>
+      </div>
+      <div class="form-nav">
+        <button class="btn-next" onclick="nextStep(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="form-step" id="step-2">
+      <div class="step-title">How quickly do you need to sell?</div>
+      <div class="pill-grid">
+        <input type="radio" name="urgency" id="u1" class="pill-option" value="ASAP (0-30 days)">
+        <label for="u1">⚡ ASAP (0–30 days)</label>
+        <input type="radio" name="urgency" id="u2" class="pill-option" value="30-60 days">
+        <label for="u2">📅 30–60 days</label>
+        <input type="radio" name="urgency" id="u3" class="pill-option" value="60-90 days">
+        <label for="u3">🕐 60–90 days</label>
+        <input type="radio" name="urgency" id="u4" class="pill-option" value="Just exploring">
+        <label for="u4">🔍 Just exploring</label>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(2)">← Back</button>
+        <button class="btn-next" onclick="nextStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="form-step" id="step-3">
+      <div class="step-title">What's your reason for selling?</div>
+      <div class="pill-grid">
+        <input type="radio" name="reason" id="r1" class="pill-option" value="Divorce">
+        <label for="r1">⚖️ Divorce</label>
+        <input type="radio" name="reason" id="r2" class="pill-option" value="Needs repairs">
+        <label for="r2">🔨 Needs repairs</label>
+        <input type="radio" name="reason" id="r3" class="pill-option" value="Inherited">
+        <label for="r3">📜 Inherited property</label>
+        <input type="radio" name="reason" id="r4" class="pill-option" value="Relocation">
+        <label for="r4">✈️ Relocation</label>
+        <input type="radio" name="reason" id="r5" class="pill-option" value="Foreclosure">
+        <label for="r5">🏦 Foreclosure</label>
+        <input type="radio" name="reason" id="r6" class="pill-option" value="Financial hardship">
+        <label for="r6">💡 Financial hardship</label>
+        <input type="radio" name="reason" id="r7" class="pill-option" value="Other">
+        <label for="r7">📝 Other</label>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(3)">← Back</button>
+        <button class="btn-next" onclick="nextStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="form-step" id="step-4">
+      <div class="step-title">What's the property address?</div>
+      <input type="text" class="form-input" id="address" placeholder="Street address">
+      <div class="form-row">
+        <input type="text" class="form-input" id="city" placeholder="City">
+        <input type="text" class="form-input" id="state" placeholder="State">
+      </div>
+      <input type="text" class="form-input" id="zip" placeholder="ZIP code">
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(4)">← Back</button>
+        <button class="btn-next" onclick="nextStep(4)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="form-step" id="step-5">
+      <div class="step-title">Where should we send your offer?</div>
+      <input type="text" class="form-input" id="fullname" placeholder="Full name">
+      <input type="email" class="form-input" id="email" placeholder="Email address">
+      <input type="tel" class="form-input" id="phone" placeholder="Phone number">
+      <div class="consent-wrap">
+        <label>
+          <input type="checkbox" id="consent">
+          By submitting, you consent to receive calls, texts, and emails from Blue Bird LLC. Msg & data rates may apply. Reply STOP to unsubscribe.
+          <a href="privacy-policy.html">Terms & Privacy</a>
+        </label>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(5)">← Back</button>
+        <button class="btn-next" onclick="submitForm()">Get My Free Offer →</button>
+      </div>
+    </div>
+
+    <form id="sell-form-post" action="" method="POST" target="sell-form-response" style="display:none;">
+      <input type="hidden" id="sell-hidden-propertyType" name="propertyType">
+      <input type="hidden" id="sell-hidden-urgency" name="urgency">
+      <input type="hidden" id="sell-hidden-reason" name="reason">
+      <input type="hidden" id="sell-hidden-address" name="address">
+      <input type="hidden" id="sell-hidden-fullname" name="fullname">
+      <input type="hidden" id="sell-hidden-email" name="email">
+      <input type="hidden" id="sell-hidden-phone" name="phone">
+      <input type="hidden" id="sell-hidden-smsconsen" name="smsconsen">
+    </form>
+    <iframe id="sell-form-response" name="sell-form-response" style="display:none;"></iframe>
+
+    <!-- Success -->
+    <div class="form-success" id="form-success">
+      <div class="check">🎉</div>
+      <h3>Offer Request Received!</h3>
+      <p>Thanks! A Blue Bird team member will contact you within 24 hours with your cash offer. No obligation, no pressure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROPERTIES -->
+<section id="properties">
+  <div class="center">
+    <div class="section-label">Featured Listings</div>
+    <h2>Properties Available Now</h2>
+    <p class="section-sub">Browse our current inventory of homes and land available for sale across the USA.</p>
+  </div>
+  <div class="prop-grid" id="properties-grid">
+    <div class="prop-card">
+      <div class="prop-img">🏠</div>
+      <div class="prop-body">
+        <span class="prop-badge">Loading listings</span>
+        <div class="prop-title">Fetching available properties…</div>
+        <div class="prop-addr">Please wait a moment.</div>
+      </div>
+    </div>
+  </div>
+  <div class="properties-actions">
+    <button class="btn-see-more" id="see-more-btn" type="button" style="display:none;">See More</button>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual">
+      <div class="stat-item">
+        <div class="stat-num">100+</div>
+        <div class="stat-label">Properties transacted nationwide</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">24 hrs</div>
+        <div class="stat-label">Average offer turnaround</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">7 days</div>
+        <div class="stat-label">Fastest close on record</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">$0</div>
+        <div class="stat-label">Fees, commissions, or repairs required</div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">About Blue Bird</div>
+      <h2>Real Estate Done Right</h2>
+      <p>At Blue Bird Real Estate, we believe selling your home shouldn't be stressful, expensive, or unpredictable. Whether you're facing a difficult situation or just ready to move on, we make the process simple and respectful.</p>
+      <p>Our team of experienced investors works directly with homeowners across the USA — no middlemen, no games. We close fast, pay cash, and treat every seller with honesty and care.</p>
+      <ul class="about-bullets">
+        <li>No repairs or cleaning required</li>
+        <li>No agent commissions or closing fees</li>
+        <li>Close in as little as 7 days</li>
+        <li>Transparent, fair offers — no lowballing</li>
+        <li>We handle all the paperwork</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <div class="section-label">Reach Out</div>
+      <h2>Let's Talk</h2>
+      <p class="section-sub" style="margin-bottom:2rem">Have questions or want to discuss your property? Our team is ready to help.</p>
+      <div class="contact-info">
+        <div class="contact-card">
+          <div class="contact-icon">📞</div>
+          <div>
+            <strong>Phone</strong>
+            <a href="tel:+14026859146">+1 (402) 685-9146</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <strong>Email</strong>
+            <a href="mailto:info@bluebirds.properties">info@bluebirds.properties</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">⏰</div>
+          <div>
+            <strong>Hours</strong>
+            <span>Mon–Fri, 8 AM – 6 PM</span>
+          </div>
         </div>
       </div>
-    </nav>
-
-    <section id="home" class="hero">
-      <h1>Find Your Dream Home with Blue Bird Real Estate</h1>
-      <p>Top-rated properties and trusted realtors across the USA.</p>
-      <a href="#properties" class="btn btn-primary mt-3">View Properties</a>
-    </section>
-
-    <section id="sell-property" class="container pb-5 mb-5">
-      <div class="text-center mb-5">
-        <h2>Sell Your Property With Us</h2>
-        <p>Fill out the form below to get a competitive offer for your property.</p>
+    </div>
+    <form class="contact-form" id="contact-form" action="" method="POST">
+      <input type="text" class="form-input" id="contact-name" name="name" placeholder="Your full name" required>
+      <input type="email" class="form-input" id="contact-email" name="email" placeholder="Email address" required>
+      <input type="tel" class="form-input" id="contact-phone" name="phone" placeholder="Phone number (optional)">
+      <textarea class="form-input" id="contact-message" name="message" placeholder="Tell us about your property or question…" required></textarea>
+      <div class="contact-consent">
+        <label>
+          <input type="checkbox" id="contact-consent" name="consent" required>
+          I consent to receive emails and SMS from Blue Bird LLC. <a href="privacy-policy.html">Privacy Policy</a>
+        </label>
       </div>
+      <button class="btn-contact" type="submit">Send Message</button>
+      <p id="contact-status" style="margin-top: 0.8rem; font-size: 0.9rem; color: var(--gray);"></p>
+    </form>
+    <iframe id="contact-response" name="contact-response" style="display:none;"></iframe>
+  </div>
+</section>
 
-      <div class="progress mb-4">
-        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="img/logo.png" alt="Blue Bird Real Estate" />
+    <span>Blue Bird Real Estate</span>
+  </div>
+  <p><span id="year"></span> Blue Bird Real Estate LLC. All Rights Reserved. &nbsp;|&nbsp; <a href="privacy-policy.html">Privacy Policy</a></p>
+</footer>
 
-      <form id="sellPropertyForm">
-        <!-- Step 1: Property Type -->
-        <div class="form-step active" id="step-1">
-          <h5 class="mb-4 text-center">Step 1: Select your property type</h5>
-          <div class="row justify-content-center">
-            <div class="col-md-8 options-container">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="propertyType" id="singleFamily" value="Single Family">
-                <label class="form-check-label" for="singleFamily">Single Family</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="propertyType" id="multiFamily" value="Multi Family">
-                <label class="form-check-label" for="multiFamily">Multi Family</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="propertyType" id="condominium" value="Condominium">
-                <label class="form-check-label" for="condominium">Condominium</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="propertyType" id="townhouse" value="Townhouse">
-                <label class="form-check-label" for="townhouse">Townhouse</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="propertyType" id="vacantLand" value="Vacant Land">
-                <label class="form-check-label" for="vacantLand">Vacant Land</label>
-              </div>
-            </div>
-            <div class="invalid-feedback d-block text-center mt-3" id="step-1-error" style="display: none;">
-              Please select an option to continue.
-            </div>
+<script>
+  let currentStep = 1;
+  const totalSteps = 5;
+  const propertiesApiUrl = 'https://script.google.com/macros/s/AKfycbzi4of0-tBD4-DZ0EBix2axdnA6Ssm4P0rJ9behrrGFSIEieEhDXCMkSaSifNhMFyih/exec';
+  const contactApiUrl = 'https://script.google.com/macros/s/AKfycbwY8pj5Rs6kOn4w0_D7ZMHstQI4eCm-UZ79pnmx8qvnNGJSHCpelAKLlBiDcnaJTZNIFg/exec';
+  const sellFormApiUrl = 'https://script.google.com/macros/s/AKfycbyHbylkvi2Lmx6gS8WygCZMtS1-RL0iDVUhL6WMsEIiqt-T_XUzU80Fhh808sWNn2Gl/exec';
+  let allProperties = [];
+  let visibleCount = 6;
+
+  const fallbackProperties = [
+    {
+      title: '3BR/2BA Ranch Home',
+      address: 'Charlotte, NC 28205',
+      price: '$224,900',
+      beds: '3 bed',
+      baths: '2 bath',
+      sqft: '1,450 sqft',
+      badge: 'For Sale'
+    },
+    {
+      title: '2.1 Acre Lot — Build Ready',
+      address: 'Tulsa, OK 74012',
+      price: '$34,500',
+      beds: '',
+      baths: '',
+      sqft: '2.1 acres',
+      badge: 'Vacant Land'
+    },
+    {
+      title: 'Duplex — Both Units Rented',
+      address: 'Houston, TX 77023',
+      price: '$289,000',
+      beds: '4 bed total',
+      baths: '',
+      sqft: '',
+      badge: 'Investment'
+    }
+  ];
+
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatPrice(value) {
+    if (value === null || value === undefined || value === '') return 'Call for price';
+    if (typeof value === 'number') {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
+    }
+    const numeric = Number(String(value).replace(/[^0-9.-]/g, ''));
+    if (!Number.isNaN(numeric)) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(numeric);
+    }
+    return String(value);
+  }
+
+  function normalizeProperty(item) {
+    const getValue = (...keys) => {
+      for (const key of keys) {
+        const value = item?.[key];
+        if (value !== undefined && value !== null && String(value).trim() !== '') return value;
+      }
+      return '';
+    };
+
+    const title = getValue('title', 'property_title', 'name', 'listing_title', 'address');
+    const address = getValue('address', 'location', 'property_address', 'city', 'full_address');
+    const price = getValue('price', 'sale_price', 'listing_price', 'offer_price');
+    const beds = getValue('beds', 'bedrooms', 'bed');
+    const baths = getValue('baths', 'bathrooms', 'bath');
+    const sqft = getValue('sqft', 'square_feet', 'size', 'area');
+    const badge = getValue('type', 'status', 'category', 'badge');
+    const image = getValue('imageURL', 'imageUrl', 'image_url', 'image', 'photo', 'img', 'imgUrl', 'photoUrl', 'photoURL', 'thumbnail', 'picture', 'pictureUrl', 'mediaUrl');
+    const link = getValue('zillowLink', 'link', 'listingLink', 'url', 'propertyUrl', 'href');
+
+    return {
+      title: title || 'Available Property',
+      address: address || 'Contact us for details',
+      price: price ? formatPrice(price) : 'Call for price',
+      beds: beds || '',
+      baths: baths || '',
+      sqft: sqft || '',
+      badge: badge || 'Available',
+      image: image || '',
+      link: link || ''
+    };
+  }
+
+  function renderVisibleProperties() {
+    const container = document.getElementById('properties-grid');
+    const button = document.getElementById('see-more-btn');
+    if (!container) return;
+
+    const items = Array.isArray(allProperties) ? allProperties.slice(0, visibleCount) : [];
+    if (!items.length) {
+      container.innerHTML = `
+        <div class="prop-card">
+          <div class="prop-img">🏠</div>
+          <div class="prop-body">
+            <span class="prop-badge">No listings</span>
+            <div class="prop-title">No properties available right now</div>
+            <div class="prop-addr">Please check back soon.</div>
           </div>
-          <div class="text-center mt-4">
-            <button type="button" class="btn btn-primary next-step">Next</button>
+        </div>`;
+      if (button) button.style.display = 'none';
+      return;
+    }
+
+    container.innerHTML = items.map((item) => {
+      const property = normalizeProperty(item);
+      const metaParts = [property.beds, property.baths, property.sqft].filter(Boolean);
+      const metaMarkup = metaParts.length ? `<div class="prop-meta">${metaParts.map((part) => `<span>${escapeHtml(part)}</span>`).join('')}</div>` : '';
+      const imageMarkup = property.image
+        ? `<a class="prop-img-link" href="${escapeHtml(property.link || '#')}" target="_blank" rel="noopener noreferrer">
+            <img class="prop-img" src="${escapeHtml(property.image)}" alt="${escapeHtml(property.title)}" loading="lazy" onerror="this.style.display='none'; this.parentElement.querySelector('.prop-img-fallback').style.display='flex';">
+            <div class="prop-img prop-img-fallback" style="display:none;">🏠</div>
+          </a>`
+        : `<div class="prop-img">🏠</div>`;
+
+      return `
+        <div class="prop-card">
+          ${imageMarkup}
+          <div class="prop-body">
+            <span class="prop-badge">${escapeHtml(property.badge)}</span>
+            <div class="prop-title">${escapeHtml(property.title)}</div>
+            <div class="prop-addr">📍 ${escapeHtml(property.address)}</div>
+            <div class="prop-price">${escapeHtml(property.price)}</div>
+            ${metaMarkup}
           </div>
-        </div>
+        </div>`;
+    }).join('');
 
-        <!-- Step 2: Urgency -->
-        <div class="form-step" id="step-2">
-          <h5 class="mb-4 text-center">Step 2: What is your level of urgency?</h5>
-          <div class="row justify-content-center">
-            <div class="col-md-8 options-container">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="urgency" id="quickSale" value="Quick Sale (0-30 Days)">
-                <label class="form-check-label" for="quickSale">Quick Sale (0-30 Days)</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="urgency" id="canWait" value="I can Wait (30-60 Days)">
-                <label class="form-check-label" for="canWait">I can Wait (30-60 Days)</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="urgency" id="browsing" value="Just browsing around (60-90 Days)">
-                <label class="form-check-label" for="browsing">Just browsing around (60-90 Days)</label>
-              </div>
-            </div>
-            <div class="invalid-feedback d-block text-center mt-3" id="step-2-error" style="display: none;">
-              Please select an option to continue.
-            </div>
-          </div>
-          <div class="text-center mt-4">
-            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-            <button type="button" class="btn btn-primary next-step">Next</button>
-          </div>
-        </div>
-        
-        <!-- Step 3: Reason for Selling -->
-        <div class="form-step" id="step-3">
-          <h5 class="mb-4 text-center">Step 3: What is your reason for selling?</h5>
-          <div class="row justify-content-center">
-            <div class="col-md-8 options-container">
-              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="divorce" value="Divorce"><label class="form-check-label" for="divorce">Divorce</label></div>
-              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="repairs" value="Property needs repairs"><label class="form-check-label" for="repairs">Property needs repairs</label></div>
-              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="inherited" value="Inherited"><label class="form-check-label" for="inherited">Inherited</label></div>
-              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="relocation" value="Relocation"><label class="form-check-label" for="relocation">Relocation</label></div>
-              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="foreclosure" value="Foreclosure"><label class="form-check-label" for="foreclosure">Foreclosure</label></div>
-              <div class="form-check"><input class="form-check-input" type="radio" name="reason" id="financial" value="Financial hardship"><label class="form-check-label" for="financial">Financial hardship</label></div>
-            </div>
-            <div class="invalid-feedback d-block text-center mt-3" id="step-3-error" style="display: none;">
-              Please select an option to continue.
-            </div>
-          </div>
-          <div class="text-center mt-4">
-            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-            <button type="button" class="btn btn-primary next-step">Next</button>
-          </div>
-        </div>
-        
-        <!-- Step 4: Property Address -->
-        <div class="form-step" id="step-4">
-          <h5 class="mb-4 text-center">Step 4: What is the property address?</h5>
-          <div class="row justify-content-center">
-            <div class="col-md-8">
-              <input type="text" id="property-address" name="address" class="form-control" placeholder="Enter property address" autocomplete="off">
-              <div class="invalid-feedback">Please fill out this field.</div>
-            </div>
-          </div>
-          <div class="text-center mt-4">
-            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-            <button type="button" class="btn btn-primary next-step">Next</button>
-          </div>
-        </div>
+    if (button) {
+      if (allProperties.length > 6) {
+        button.style.display = 'inline-flex';
+        button.textContent = visibleCount >= allProperties.length ? 'See Less' : 'See More';
+      } else {
+        button.style.display = 'none';
+      }
+    }
+  }
 
-        <!-- Step 5: Contact Info -->
-        <div class="form-step" id="step-5">
-          <h5 class="mb-4 text-center">Step 5: Enter your contact information</h5>
-          <div class="row justify-content-center g-3">
-            <div class="col-md-8">
-              <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Full Name" required>
-              <div class="invalid-feedback">Please enter your full name.</div>
-            </div>
-            <div class="col-md-8">
-              <input type="email" id="email" name="email" class="form-control" placeholder="Email Address" required>
-              <div class="invalid-feedback">Please enter a valid email address.</div>
-            </div>
-            <div class="col-md-8">
-              <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone Number" required>
-              <div class="invalid-feedback">Please enter your phone number.</div>
-            </div>
-            <div class="col-md-8 mt-4">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="smsconsent" value="true" id="smsConsent" required >
-                <label class="form-check-label" for="smsConsent">
-                  By submitting this form, you consent to receive text messages and emails from Blue Bird LLC for marketing and account notifications. Message frequency may vary. Msg and Data rates apply. Reply "STOP" to unsubscribe. Text HELP for support. Consent is not a condition of purchase. View <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer" style="color: #ffffff; text-decoration: underline;">Terms & Conditions and Privacy Policy</a>.
-                </label>
-                <div class="invalid-feedback">You must agree to the terms to continue.</div>
-              </div>
-            </div>
-          </div>
-          <div class="text-center mt-4">
-            <button type="button" class="btn btn-secondary prev-step">Previous</button>
-            <button type="submit" class="btn btn-primary">Submit Offer Request</button>
-          </div>
-        </div>
-        <div id="form-feedback" class="text-center mt-4" style="display: none;">
-          <p class="fs-5"></p>
-        </div>
-      </form>
-    </section>
+  function renderProperties(properties) {
+    allProperties = Array.isArray(properties) ? properties : [];
+    visibleCount = 6;
+    renderVisibleProperties();
+  }
 
-    <section id="properties" class="container py-5">
-      <div class="text-center mb-5">
-        <h2>Featured Properties</h2>
-        <p>Explore our top listings available right now</p>
-      </div>
-      <div id="properties-container" class="row g-4 justify-content-center">
-        <!-- Las propiedades se cargarán aquí dinámicamente -->
-      </div>
-      <div class="text-center mt-4" id="show-more-wrapper" style="display: none;">
-        <button id="show-more-btn" class="btn btn-primary">Show More &darr;</button>
-      </div>
-    </section>
+  function togglePropertiesView() {
+    if (!allProperties.length) return;
+    visibleCount = visibleCount >= allProperties.length ? 6 : allProperties.length;
+    renderVisibleProperties();
+  }
 
-    <section id="about" class="about container text-center">
-      <h2>About Us</h2>
-      <p class="mt-4">At Blue Bird Real Estate, we help families find the perfect home through transparency, professionalism, and dedication. Our team of experienced agents provides top-tier real estate services across the United States, making your dream home a reality.</p>
-    </section>
+  function parsePropertiesData(data) {
+    if (Array.isArray(data)) return data;
+    if (data && typeof data === 'object') {
+      if (Array.isArray(data.properties)) return data.properties;
+      if (Array.isArray(data.items)) return data.items;
+      if (Array.isArray(data.rows)) return data.rows;
+      if (Array.isArray(data.result)) return data.result;
+    }
+    if (typeof data === 'string') {
+      try {
+        return parsePropertiesData(JSON.parse(data));
+      } catch (error) {
+        console.warn('Could not parse properties response as JSON:', error);
+      }
+    }
+    return null;
+  }
 
-    <section id="contact" class="contact text-center">
-      <div class="container">
-        <h2>Contact Us</h2>
-        <p class="mb-5">We'd love to hear from you. Get in touch with our team today.</p>
-        <form id="contactForm" class="row justify-content-center g-3">
-          <div class="col-md-5">
-            <input type="text" name="name" class="form-control" placeholder="Full Name" required>
-          </div>
-          <div class="col-md-5">
-            <input type="email" name="email" class="form-control" placeholder="Email Address" required>
-          </div>
-          <div class="col-md-10">
-            <textarea name="message" class="form-control" rows="4" placeholder="Your Message" required style="color: #333;"></textarea>
-          </div>
-          <div class="col-md-10">
-            <div class="form-check" style="text-align: left;">
-              <input class="form-check-input" type="checkbox" name="emailConsent" value="true" id="emailConsent" required>
-              <label class="form-check-label" for="emailConsent" style="display: inline; width: auto; height: auto; padding: 0; border: none; background-color: transparent; color: #ffffff; font-weight: normal;">
-                By checking this box, you consent to receive emails and SMS from Blue Bird LLC for marketing and informational purposes. You can unsubscribe at any time. For more details, please review our <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer" style="color: #ffffff; text-decoration: underline;">Privacy Policy</a>.
-              </label>
-              <div class="invalid-feedback">You must agree to the terms to continue.</div>
-            </div>
-          </div>
-          <div class="col-md-10">
-            <button type="submit" class="btn btn-light px-5">Send Inquiry</button>
-          </div>
-        </form>
-        <div id="contact-form-feedback" class="text-center mt-3" style="display: none;">
-          <p class="fs-5"></p>
-        </div>
-        <div class="mt-5">
-          <p>📞 +1 (402) 685-9146</p>
-          <p>✉️ info@bluebirds.properties</p>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <div class="container d-flex justify-content-between align-items-center">
-        <a href="#"><img src="img/logo.png" alt="Blue Bird Logo" height="80"></a>
-        <p class="mb-0">© 2025 Blue Bird Real Estate. All Rights Reserved.</p>
-      </div>
-    </footer>
-
-    <!-- jQuery (necesario para Bootstrap JS y bootstrap-autocomplete) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Bootstrap Autocomplete -->
-    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        // --- LÓGICA DEL FORMULARIO MULTI-PASO (Vanilla JS adaptado a jQuery ready) ---
-        const steps = Array.from(document.querySelectorAll('.form-step'));
-        const nextButtons = document.querySelectorAll('.next-step');
-        const prevButtons = document.querySelectorAll('.prev-step');
-        const progressBar = document.getElementById('progressBar');
-        const form = document.getElementById('sellPropertyForm');
-        const formFeedback = document.getElementById('form-feedback');
-        let currentStep = 0;
-
-        function updateProgress() {
-          const progress = ((currentStep + 1) / steps.length) * 100;
-          progressBar.style.width = `${progress}%`;
-          progressBar.setAttribute('aria-valuenow', progress);
-        }
-
-        function validateStep(stepIndex) {
-          const currentStepElement = steps[stepIndex];
-          let isValid = true;
-
-          // Validar pasos con radio buttons (0, 1, 2)
-          if (stepIndex <= 2) {
-            const errorElement = document.getElementById(`step-${stepIndex + 1}-error`);
-            const radioButtons = currentStepElement.querySelectorAll('input[type="radio"]');
-            const isChecked = Array.from(radioButtons).some(radio => radio.checked);
-            if (!isChecked) {
-              errorElement.style.display = 'block'; // Muestra el error
-              isValid = false;
-            } else {
-              errorElement.style.display = 'none'; // Oculta el error si ya está corregido
-            }
-          }
-
-          // Validar paso de dirección (índice 3)
-          if (stepIndex === 3) {
-            const addressInput = document.getElementById('property-address');
-            addressInput.classList.remove('is-invalid');
-
-            if (addressInput.value.trim() === '') {
-              addressInput.classList.add('is-invalid');
-              isValid = false;
-            }
-          }
-
-          return isValid;
-        }
-
-        function validateFinalStep() {
-          let isValid = true;
-          const finalStepInputs = [
-            { id: 'fullname', type: 'text' },
-            { id: 'email', type: 'email' },
-            { id: 'phone', type: 'tel' },
-            { id: 'smsConsent', type: 'checkbox' }
-          ];
-
-          finalStepInputs.forEach(field => {
-            const input = document.getElementById(field.id);
-            input.classList.remove('is-invalid');
-
-            let isFieldInvalid = false;
-            if (field.type === 'checkbox') {
-              if (!input.checked) {
-                isFieldInvalid = true;
-              }
-            } else {
-              if (input.value.trim() === '') {
-                isFieldInvalid = true;
-              }
-            }
-
-            if (isFieldInvalid) {
-              input.classList.add('is-invalid');
-              isValid = false;
-            }
-          });
-
-          return isValid;
-        }
-
-        nextButtons.forEach(button => {
-          button.addEventListener('click', () => {
-            if (validateStep(currentStep) && currentStep < steps.length - 1) {
-              steps[currentStep].classList.remove('active');
-              currentStep++;
-              steps[currentStep].classList.add('active');
-              updateProgress();
-            }
-          });
-        });
-
-        prevButtons.forEach(button => {
-          button.addEventListener('click', () => {
-            if (currentStep > 0) {
-              steps[currentStep].classList.remove('active');
-              currentStep--;
-              steps[currentStep].classList.add('active');
-              updateProgress();
-            }
-          });
-        });
-
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbz6pzpf-nGdkzbRpP-yLyR1dt9iaAzKv7wjDs76Xuk1eqOk_qgeo1gTzvvMa7YXza9-hw/exec';
-            const feedbackParagraph = formFeedback.querySelector('p');
-            if (!validateFinalStep()) { return; }
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
-            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                .then(response => {
-                    formFeedback.style.display = 'block';
-                    feedbackParagraph.textContent = 'Thank you! Your request has been submitted successfully.';
-                    feedbackParagraph.className = 'fs-5 text-white';
-                    form.reset();
-                    steps[currentStep].classList.remove('active');
-                    currentStep = 0;
-                    steps[currentStep].classList.add('active');
-                    updateProgress();
-                })
-                .catch(error => {
-                    formFeedback.style.display = 'block';
-                    feedbackParagraph.textContent = 'Oops! There was a problem submitting your form. Please try again later.';
-                    feedbackParagraph.className = 'fs-5 text-danger';
-                })
-                .finally(() => {
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = 'Submit Offer Request';
-                });
-        });
-
-        // --- LÓGICA DEL FORMULARIO DE CONTACTO ---
-        const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwY8pj5Rs6kOn4w0_D7ZMHstQI4eCm-UZ79pnmx8qvnNGJSHCpelAKLlBiDcnaJTZNIFg/exec'; // <-- ¡IMPORTANTE! Usa una URL de script diferente para este formulario.
-            const submitButton = contactForm.querySelector('button[type="submit"]');
-            const feedbackElement = document.getElementById('contact-form-feedback');
-            const feedbackParagraph = feedbackElement.querySelector('p');
-
-            // Validación del formulario de contacto
-            let isContactFormValid = true;
-            const consentCheckbox = document.getElementById('emailConsent');
-            consentCheckbox.classList.remove('is-invalid');
-            if (!consentCheckbox.checked) {
-                consentCheckbox.classList.add('is-invalid');
-                // Muestra el mensaje de error del checkbox
-                consentCheckbox.nextElementSibling.nextElementSibling.style.display = 'block';
-                isContactFormValid = false;
-            } else {
-                consentCheckbox.nextElementSibling.nextElementSibling.style.display = 'none';
-            }
-
-            if (!contactForm.checkValidity() || !isContactFormValid) { return; }
-
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
-
-            fetch(scriptURL, { method: 'POST', body: new FormData(contactForm) })
-                .then(response => {
-                    feedbackElement.style.display = 'block';
-                    feedbackParagraph.textContent = 'Thank you! Your message has been sent successfully.';
-                    feedbackParagraph.className = 'fs-5 text-white';
-                    contactForm.reset();
-                })
-                .catch(error => {
-                    feedbackElement.style.display = 'block';
-                    feedbackParagraph.textContent = 'Oops! There was a problem sending your message. Please try again later.';
-                    feedbackParagraph.className = 'fs-5 text-danger';
-                })
-                .finally(() => {
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = 'Send Inquiry';
-                });
-        });
-
-        // --- LÓGICA DEL AUTOCOMPLETADO (jQuery) ---
-        const openCageApiKey = '82c07e6ffeff4333a3c4b8e82fd990ee';
-        $('#property-address').autoComplete({
-            resolver: 'custom',
-            events: {
-                search: function (searchTerm, callback) {
-                    if (searchTerm.length < 3) {
-                        callback([]);
-                        return;
-                    }
-                    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(searchTerm)}&key=${openCageApiKey}&limit=5&no_annotations=1`;
-                    fetch(url)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.results) {
-                                // Procesar y entregar los datos formateados directamente en el callback
-                                callback(data.results.map(item => ({ value: item.formatted, text: item.formatted })));
-                            }
-                        })
-                        .catch(error => console.error('Error fetching address suggestions:', error));
-                }
-            }
-        });
-
-        // --- LÓGICA PARA CARGAR PROPIEDADES DESDE GOOGLE SHEETS ---
-        function loadProperties() {
-          const propertiesApiUrl = 'https://script.google.com/macros/s/AKfycbzi4of0-tBD4-DZ0EBix2axdnA6Ssm4P0rJ9behrrGFSIEieEhDXCMkSaSifNhMFyih/exec';
-          const container = document.getElementById('properties-container');
-          const showMoreWrapper = document.getElementById('show-more-wrapper');
-          const showMoreBtn = document.getElementById('show-more-btn');
-          const propertiesPerLoad = 6;
-          let allProperties = [];
-          let propertiesShown = 0;
-
-          container.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="mt-2">Loading properties...</p></div>';
-
-          function renderProperties(properties) {
-            properties.forEach(prop => {
-              const priceValue = parseFloat(prop.price);
-              let formattedPrice;
-
-              if (!isNaN(priceValue)) {
-                formattedPrice = priceValue.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
-              } else {
-                formattedPrice = prop.price;
-              }
-
-              let imageUrl = (prop.imageURL || "").trim();
-
-              // Limpieza robusta de la URL: quita comillas accidentales, corrige dobles ampersands y fuerza HTTPS
-              imageUrl = imageUrl.replace(/^["']|["']$/g, ''); 
-              imageUrl = imageUrl.replace(/&&/g, '&');
-              if (imageUrl.startsWith('http:')) imageUrl = imageUrl.replace('http:', 'https:');
-
-              // Si el usuario pegó el código iframe completo de Google Maps, extraemos la URL src
-              // Soporta comillas simples y dobles
-              if (imageUrl.includes('<iframe')) {
-                const srcMatch = imageUrl.match(/src=["']([^"']+)["']/);
-                if (srcMatch && srcMatch[1]) {
-                  imageUrl = srcMatch[1];
-                }
-              }
-
-              let mediaContent;
-              // Verifica si la URL contiene "maps" y "embed" para identificar mapas interactivos
-              if (imageUrl.includes('maps') && imageUrl.includes('embed')) {
-                mediaContent = `<iframe src="${imageUrl}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
-              } else {
-                mediaContent = `<img src="${imageUrl}" alt="Property at ${prop.address}" loading="lazy">`;
-              }
-
-              const propertyCardHtml = `
-                <div class="col-md-4">
-                  <a href="${prop.zillowLink}" target="_blank" rel="noopener noreferrer" class="property-link">
-                    <div class="property-card">
-                      ${mediaContent}
-                      <p class="property-address">${prop.address}</p>
-                      <strong class="property-price">${formattedPrice}</strong>
-                    </div>
-                  </a>
-                </div>
-              `;
-              container.insertAdjacentHTML('beforeend', propertyCardHtml);
-            });
-          }
-
-          // Agregamos un parámetro único (timestamp) para evitar la caché del navegador y cargar siempre datos frescos
-          fetch(`${propertiesApiUrl}?v=${new Date().getTime()}`)
-            .then(response => response.json())
-            .then(data => {
-              container.innerHTML = '';
-              if (data.properties && data.properties.length > 0) {
-                allProperties = data.properties;
-                const initialProperties = allProperties.slice(0, propertiesPerLoad);
-                renderProperties(initialProperties);
-                propertiesShown = initialProperties.length;
-
-                if (allProperties.length > propertiesPerLoad) {
-                  showMoreWrapper.style.display = 'block';
-                } else {
-                  showMoreWrapper.style.display = 'none';
-                }
-              } else {
-                container.innerHTML = '<div class="col-12 text-center"><p>No properties are currently available. Please check back later.</p></div>';
-              }
-            })
-            .catch(error => {
-              console.error('Error fetching properties:', error);
-              container.innerHTML = '<div class="col-12 text-center"><p class="text-danger">Could not load properties at this time. Please try again later.</p></div>';
-            });
-
-          // Event listener para el botón "Show More" / "Show Less"
-          showMoreBtn.addEventListener('click', () => {
-            // Si se han mostrado todas las propiedades, el botón funciona como "Show Less"
-            if (propertiesShown >= allProperties.length) {
-              // 1. Limpia el contenedor
-              container.innerHTML = '';
-              // 2. Vuelve a renderizar solo las propiedades iniciales
-              const initialProperties = allProperties.slice(0, propertiesPerLoad);
-              renderProperties(initialProperties);
-              // 3. Resetea el contador de propiedades mostradas
-              propertiesShown = initialProperties.length;
-              // 4. Cambia el texto y la flecha del botón a "Show More"
-              showMoreBtn.innerHTML = 'Show More &darr;';
-            } else {
-              // Si aún hay propiedades por mostrar, el botón funciona como "Show More"
-              const nextProperties = allProperties.slice(propertiesShown, propertiesShown + propertiesPerLoad);
-              renderProperties(nextProperties);
-              propertiesShown += nextProperties.length;
-              // Si después de añadir estas, ya se muestran todas, cambia el texto y la flecha
-              if (propertiesShown >= allProperties.length) {
-                showMoreBtn.innerHTML = 'Show Less &uarr;';
-              }
-            }
-          });
-        }
-
-        loadProperties(); // Llama a la función para cargar las propiedades al iniciar la página.
+  async function loadProperties() {
+    try {
+      const response = await fetch(propertiesApiUrl, {
+        method: 'GET',
+        headers: { Accept: 'application/json' }
       });
-    </script>
-  </body>
+
+      if (!response.ok) throw new Error('Request failed with status ' + response.status);
+
+      const data = await response.json().catch(async () => {
+        const text = await response.text();
+        return text;
+      });
+
+      const parsed = parsePropertiesData(data);
+      if (parsed && parsed.length) {
+        renderProperties(parsed);
+        return;
+      }
+
+      throw new Error('No property data returned');
+    } catch (error) {
+      console.warn('Using fallback properties because the Google Sheets feed could not be loaded:', error);
+      renderProperties(fallbackProperties);
+    }
+  }
+
+  function updateProgress(step) {
+    for (let i = 1; i <= totalSteps; i++) {
+      const dot = document.getElementById('dot-' + i);
+      dot.className = 'step-dot';
+      if (i < step) dot.classList.add('done');
+      else if (i === step) dot.classList.add('active');
+    }
+    const pct = ((step - 1) / (totalSteps - 1)) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = 'Step ' + step + ' of ' + totalSteps;
+  }
+
+  function showStep(step) {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('step-' + step);
+    if (el) el.classList.add('active');
+    updateProgress(step);
+    currentStep = step;
+  }
+
+  function nextStep(step) {
+    // Simple validation
+    if (step === 1 && !document.querySelector('input[name="propertyType"]:checked')) {
+      alert('Please select a property type.'); return;
+    }
+    if (step === 2 && !document.querySelector('input[name="urgency"]:checked')) {
+      alert('Please select your urgency.'); return;
+    }
+    if (step === 3 && !document.querySelector('input[name="reason"]:checked')) {
+      alert('Please select a reason.'); return;
+    }
+    if (step === 4) {
+      const addr = document.getElementById('address').value.trim();
+      if (!addr) { alert('Please enter the property address.'); return; }
+    }
+    showStep(step + 1);
+  }
+
+  function prevStep(step) { showStep(step - 1); }
+
+  function submitForm() {
+    const name = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const consent = document.getElementById('consent').checked;
+    const propertyType = document.querySelector('input[name="propertyType"]:checked')?.value || '';
+    const urgency = document.querySelector('input[name="urgency"]:checked')?.value || '';
+    const reason = document.querySelector('input[name="reason"]:checked')?.value || '';
+    const street = document.getElementById('address').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const state = document.getElementById('state').value.trim();
+    const zip = document.getElementById('zip').value.trim();
+    const fullAddress = [street, city, state, zip].filter(Boolean).join(', ');
+
+    if (!name) { alert('Please enter your name.'); return; }
+    if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+    if (!phone) { alert('Please enter your phone number.'); return; }
+    if (!consent) { alert('Please agree to the terms to continue.'); return; }
+
+    const hiddenForm = document.getElementById('sell-form-post');
+    if (hiddenForm) {
+      document.getElementById('sell-hidden-propertyType').value = propertyType;
+      document.getElementById('sell-hidden-urgency').value = urgency;
+      document.getElementById('sell-hidden-reason').value = reason;
+      document.getElementById('sell-hidden-address').value = fullAddress;
+      document.getElementById('sell-hidden-fullname').value = name;
+      document.getElementById('sell-hidden-email').value = email;
+      document.getElementById('sell-hidden-phone').value = phone;
+      document.getElementById('sell-hidden-smsconsen').value = consent ? 'yes' : 'no';
+      hiddenForm.action = sellFormApiUrl;
+      hiddenForm.submit();
+    }
+
+    // Hide steps, show success
+    document.querySelector('.progress-wrap').style.display = 'none';
+    document.querySelectorAll('.form-step').forEach(s => s.style.display = 'none');
+    document.getElementById('form-success').style.display = 'block';
+  }
+
+  function submitContactForm(event) {
+    event.preventDefault();
+
+    const form = document.getElementById('contact-form');
+    const status = document.getElementById('contact-status');
+    const submitButton = form.querySelector('button[type="submit"]');
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const phone = document.getElementById('contact-phone').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    const consent = document.getElementById('contact-consent').checked;
+
+    if (!name || !email || !message) {
+      if (status) {
+        status.textContent = 'Please complete the required fields.';
+        status.style.color = '#c94b4b';
+      }
+      return;
+    }
+
+    if (!email.includes('@')) {
+      if (status) {
+        status.textContent = 'Please enter a valid email address.';
+        status.style.color = '#c94b4b';
+      }
+      return;
+    }
+
+    if (!consent) {
+      if (status) {
+        status.textContent = 'Please accept the privacy consent to continue.';
+        status.style.color = '#c94b4b';
+      }
+      return;
+    }
+
+    if (submitButton) submitButton.disabled = true;
+    if (status) {
+      status.textContent = 'Sending your message...';
+      status.style.color = 'var(--gray)';
+    }
+
+    form.action = contactApiUrl;
+    form.method = 'POST';
+    form.target = 'contact-response';
+    form.submit();
+
+    const iframe = document.getElementById('contact-response');
+    if (iframe) {
+      iframe.onload = function () {
+        form.reset();
+        if (status) {
+          status.textContent = 'Thanks! Your message has been sent successfully.';
+          status.style.color = '#2e8b57';
+        }
+        if (submitButton) submitButton.disabled = false;
+      };
+    }
+
+    setTimeout(() => {
+      if (submitButton) submitButton.disabled = false;
+    }, 2500);
+  }
+
+  const yearEl = document.getElementById('year');
+  if (yearEl) {
+    yearEl.textContent = '© ' + new Date().getFullYear();
+  }
+
+  const seeMoreButton = document.getElementById('see-more-btn');
+  if (seeMoreButton) {
+    seeMoreButton.addEventListener('click', togglePropertiesView);
+  }
+
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', submitContactForm);
+  }
+
+  document.querySelectorAll('video').forEach((video) => {
+    const revealVideo = () => {
+      if (video.readyState >= 2) {
+        video.style.opacity = '1';
+      }
+    };
+    video.addEventListener('loadeddata', revealVideo);
+    video.addEventListener('canplay', revealVideo);
+    video.addEventListener('canplaythrough', revealVideo);
+    video.addEventListener('play', () => {
+      video.style.opacity = '1';
+    });
+  });
+
+  loadProperties();
+</script>
+</body>
 </html>
