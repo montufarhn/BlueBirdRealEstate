@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms &amp; Conditions | Blue Bird Properties</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-2: #16253a;
+      --sky: #4a9eca;
+      --sky-lt: #7bbfe0;
+      --gold: #e8a730;
+      --gray: #6b7280;
+      --white: #ffffff;
+      --line: rgba(255,255,255,.14);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+      color: var(--white);
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .page-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .35s ease;
+    }
+
+    .page-video-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(13,27,42,.78) 0%, rgba(22,37,58,.74) 50%, rgba(74,158,202,.70) 100%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    a { color: var(--sky-lt); text-decoration: none; }
+    a:hover { color: var(--gold); }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(13, 27, 42, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
+    .nav-logo img { width: 36px; height: 36px; object-fit: contain; }
+    .nav-logo span { font-family: 'Playfair Display', serif; font-size: 1.15rem; }
+    .nav-links { display: flex; gap: 1.2rem; list-style: none; margin: 0; padding: 0; }
+    .nav-links a { color: rgba(255,255,255,.9); font-weight: 500; }
+    .nav-links a:hover { color: var(--gold); }
+
+    main { max-width: 900px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+    .terms-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 20px 45px rgba(0,0,0,.18);
+    }
+
+    .terms-card h1,
+    .terms-card h2 { font-family: 'Playfair Display', serif; color: var(--white); margin-top: 1.2rem; }
+    .terms-card h1 { font-size: 2rem; margin-top: 0; }
+    .terms-card h2 { font-size: 1.2rem; }
+    .terms-card p,
+    .terms-card li { color: rgba(255,255,255,0.9); font-size: 1rem; }
+    .terms-card ul { padding-left: 1.2rem; }
+    .terms-card .meta {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: .4rem .8rem;
+      border-radius: 999px;
+      background: rgba(232, 167, 48, 0.16);
+      color: var(--gold);
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem 2rem;
+      border-top: 1px solid var(--line);
+      background: rgba(8, 16, 27, 0.9);
+      color: rgba(255,255,255,.8);
+    }
+
+    .footer-logo { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; font-family: 'Playfair Display', serif; color: #fff; margin-bottom: .4rem; }
+    .footer-logo img { width: 32px; height: 32px; object-fit: contain; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem; }
+      .nav-links { display: none; }
+      .terms-card { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <video class="page-video" autoplay muted loop playsinline preload="auto">
+    <source src="img/background.webm" type="video/webm">
+  </video>
+  <div class="page-video-overlay"></div>
+
+  <nav>
+    <a class="nav-logo" href="index.html">
+      <img src="img/logo.png" alt="Blue Bird Properties" />
+      <span>Blue Bird Properties</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="index.html#properties">Properties</a></li>
+      <li><a href="index.html#how">How It Works</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section class="terms-card">
+      <div class="meta">Effective date: September 1, 2026</div>
+      <h1>Terms &amp; Conditions</h1>
+      <p>These Terms &amp; Conditions (&quot;Terms&quot;) govern your use of the Blue Bird Properties website, located at <a href="https://bluebirds.properties/" target="_blank" rel="noopener noreferrer">https://bluebirds.properties/</a> (the &quot;Website&quot;), and the services provided by Blue Bird Properties LLC (&quot;Blue Bird Properties,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;).</p>
+      <p>By accessing or using our Website or Services, you agree to these Terms. If you do not agree with these Terms, please do not use our Website or Services.</p>
+
+      <h2>1. Our Services</h2>
+      <p>Blue Bird Properties LLC provides real estate-related services, including the evaluation, purchase, sale, marketing, and facilitation of real estate transactions.</p>
+      <p>Information provided through the Website is for general informational purposes and does not constitute legal, financial, tax, investment, or real estate advice.</p>
+
+      <h2>2. Website Information</h2>
+      <p>We make reasonable efforts to keep information on our Website accurate and current. However, we do not guarantee that all information is complete, accurate, current, or error-free.</p>
+      <p>Property information, descriptions, availability, pricing, and other information may change without notice.</p>
+
+      <h2>3. User Information</h2>
+      <p>When you submit information through our Website, you agree that the information you provide is accurate and that you have the right to provide such information.</p>
+      <p>You are responsible for ensuring that any phone number or contact information you provide belongs to you or that you are authorized to provide it.</p>
+
+      <h2>4. SMS / Text Messaging Terms</h2>
+      <p><strong>Program Name</strong><br>Blue Bird Properties SMS Messaging Program</p>
+      <p><strong>Program Description</strong><br>If you separately opt in to receive text messages from Blue Bird Properties, you may receive SMS or MMS messages relating to real estate inquiries, property-related communications, transaction-related communications, offers, follow-ups, and other information associated with the Services or messaging program for which you provided consent.</p>
+      <p><strong>Consent to Receive Messages</strong><br>By voluntarily providing your mobile phone number and affirmatively checking an SMS consent checkbox or otherwise providing express consent to receive text messages, you agree to receive SMS or MMS messages from Blue Bird Properties LLC at the mobile number you provided.</p>
+      <p>Your consent is not a condition of purchasing any goods or services.</p>
+      <p><strong>Message Frequency</strong><br>Message frequency may vary. The number of messages you receive will depend on your interactions with Blue Bird Properties and the messaging program to which you have subscribed.</p>
+      <p><strong>Message and Data Rates</strong><br>Message and data rates may apply. Your mobile carrier may charge you for text messages or data according to the terms of your wireless plan. Blue Bird Properties is not responsible for such charges.</p>
+      <p><strong>Opting Out</strong><br>You may stop receiving text messages at any time by replying STOP. After you send STOP, you will receive confirmation that you have been unsubscribed and will no longer receive messages from that messaging program, except for messages that may be necessary to confirm or process your request or as otherwise permitted by applicable law. You may also use other supported opt-out keywords, including UNSUBSCRIBE, CANCEL, END, QUIT, or REVOKE.</p>
+      <p><strong>Getting Help</strong><br>For assistance with our SMS program, reply HELP. You may also contact us at <a href="mailto:david@bluebirds.properties">david@bluebirds.properties</a>.</p>
+      <p><strong>Re-Subscribing</strong><br>If you have opted out and later wish to receive messages again, you may re-subscribe through an available Blue Bird Properties opt-in process or by following the instructions provided by Blue Bird Properties.</p>
+      <p><strong>No Sharing of SMS Consent Information</strong><br>Blue Bird Properties does not sell or share your mobile phone number or SMS opt-in/consent information with third parties or affiliates for their own marketing or promotional purposes. SMS consent information will not be used or transferred for purposes unrelated to the messaging program for which you provided consent, except as necessary to provide the requested messaging services or as required by law.</p>
+      <p><strong>Carriers</strong><br>Wireless carriers are not liable for delayed or undelivered messages. Blue Bird Properties does not guarantee that messages will always be delivered successfully, as delivery may be affected by factors outside our control, including wireless carrier availability, network conditions, device limitations, or other technical issues.</p>
+
+      <h2>5. Privacy</h2>
+      <p>Your use of the Website and Services is also subject to our <a href="privacy-policy.html">Privacy Policy</a>. Our Privacy Policy explains how we collect, use, maintain, and disclose personal information.</p>
+
+      <h2>6. Communications</h2>
+      <p>By providing your contact information, you may receive communications related to your inquiries, transactions, requested services, or other interactions with Blue Bird Properties.</p>
+      <p>Where required by applicable law, marketing communications will only be sent after obtaining the appropriate consent.</p>
+      <p>Consent to receive SMS messages is separate from consent to receive email or telephone communications.</p>
+
+      <h2>7. Prohibited Uses</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li>Use the Website for unlawful purposes</li>
+        <li>Submit false, misleading, or fraudulent information</li>
+        <li>Attempt to gain unauthorized access to the Website or its systems</li>
+        <li>Interfere with the operation or security of the Website</li>
+        <li>Use the Website to distribute malicious software or harmful content</li>
+        <li>Use information obtained from the Website for unlawful purposes</li>
+      </ul>
+
+      <h2>8. Intellectual Property</h2>
+      <p>Unless otherwise stated, the Website and its contents, including text, graphics, logos, designs, and other materials, are owned by or licensed to Blue Bird Properties LLC.</p>
+      <p>You may not reproduce, distribute, modify, or commercially exploit Website content without our prior written permission, except as permitted by applicable law.</p>
+
+      <h2>9. Third-Party Services and Links</h2>
+      <p>The Website may contain links to third-party websites or services.</p>
+      <p>Blue Bird Properties does not control and is not responsible for third-party websites, services, content, policies, or practices. Your use of third-party services is subject to their respective terms and policies.</p>
+
+      <h2>10. Disclaimer</h2>
+      <p>The Website and Services are provided on an &quot;as is&quot; and &quot;as available&quot; basis.</p>
+      <p>To the extent permitted by law, Blue Bird Properties makes no warranties, express or implied, regarding the Website, its availability, accuracy, reliability, or suitability for any particular purpose.</p>
+
+      <h2>11. Limitation of Liability</h2>
+      <p>To the fullest extent permitted by applicable law, Blue Bird Properties LLC and its owners, members, employees, contractors, and agents will not be liable for indirect, incidental, special, consequential, or punitive damages arising from your use of or inability to use the Website or Services.</p>
+      <p>Nothing in these Terms is intended to exclude or limit liability that cannot legally be excluded or limited under applicable law.</p>
+
+      <h2>12. Changes to These Terms</h2>
+      <p>We may modify these Terms from time to time.</p>
+      <p>Updated Terms will be posted on this page with a revised Effective Date. Your continued use of the Website or Services after changes are posted constitutes acceptance of the revised Terms.</p>
+
+      <h2>13. Governing Law</h2>
+      <p>These Terms shall be governed by and interpreted in accordance with the applicable laws of the jurisdiction governing Blue Bird Properties LLC, without regard to conflict-of-law principles.</p>
+
+      <h2>14. Contact Us</h2>
+      <p>If you have questions about these Terms or our Services, please contact:</p>
+      <p><strong>Blue Bird Properties LLC</strong><br>
+      Email: <a href="mailto:david@bluebirds.properties">david@bluebirds.properties</a><br>
+      Website: <a href="https://bluebirds.properties/" target="_blank" rel="noopener noreferrer">https://bluebirds.properties/</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="img/logo.png" alt="Blue Bird Properties" />
+      <span>Blue Bird Properties</span>
+    </div>
+    <p>Copyright <span id="year"></span> Blue Bird Properties LLC. All Rights Reserved. | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms-conditions.html">Terms &amp; Conditions</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.querySelectorAll('video').forEach((video) => {
+      const revealVideo = () => {
+        if (video.readyState >= 2) video.style.opacity = '1';
+      };
+      video.addEventListener('loadeddata', revealVideo);
+      video.addEventListener('canplay', revealVideo);
+      video.addEventListener('canplaythrough', revealVideo);
+      video.addEventListener('play', () => { video.style.opacity = '1'; });
+    });
+  </script>
+</body>
+</html>
