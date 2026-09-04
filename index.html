@@ -268,9 +268,13 @@
 
   /* consent */
   .consent-wrap { margin: 1rem 0 1.5rem; }
-  .consent-wrap label { display: flex; gap: .6rem; font-size: .78rem; color: rgba(255,255,255,.5); cursor: pointer; align-items: flex-start; line-height: 1.5; }
-  .consent-wrap input[type=checkbox] { margin-top: 3px; accent-color: var(--gold); flex-shrink: 0; }
-  .consent-wrap a { color: var(--sky-lt); }
+  .consent-wrap label,
+  .contact-consent label { display: grid; grid-template-columns: 18px 1fr; gap: .7rem; font-size: .78rem; color: rgba(255,255,255,.62); cursor: pointer; align-items: start; line-height: 1.55; }
+  .consent-wrap input[type=checkbox],
+  .contact-consent input[type=checkbox] { margin: 3px 0 0; accent-color: var(--gold); flex-shrink: 0; }
+  .consent-text { display: block; }
+  .consent-links { display: block; margin-top: .45rem; }
+  .consent-wrap a { color: var(--sky-lt); font-weight: 600; }
 
   /* nav buttons */
   .form-nav { display: flex; gap: 1rem; margin-top: 1.2rem; }
@@ -377,9 +381,10 @@
   .contact-form .form-input:focus { border-color: var(--sky); }
   .contact-form textarea.form-input { height: 120px; resize: vertical; }
   .contact-consent { font-size: .78rem; color: var(--gray); margin-bottom: 1rem; }
-  .contact-consent label { display: flex; gap: .5rem; align-items: flex-start; cursor: pointer; }
-  .contact-consent input { margin-top: 3px; accent-color: var(--sky); }
-  .contact-consent a { color: var(--sky); }
+  .contact-consent label { color: var(--gray); }
+  .contact-consent input[type=checkbox] { accent-color: var(--sky); }
+  .contact-consent .consent-links { color: var(--gray); }
+  .contact-consent a { color: var(--sky); font-weight: 600; }
   .btn-contact {
     background: var(--navy); color: #fff; border: none;
     padding: 13px 28px; border-radius: 8px; font-size: .9rem; font-weight: 600;
@@ -610,7 +615,10 @@
       <div class="consent-wrap">
         <label>
           <input type="checkbox" id="consent">
-          I agree to receive recurring marketing text messages from Blue Bird Properties LLC regarding real estate opportunities, property inquiries, offers, and related services. Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help. Consent is not a condition of purchase. View our <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms &amp; Conditions</a>.
+          <span class="consent-text">
+            I agree to receive recurring marketing text messages from Blue Bird Properties LLC regarding real estate opportunities, property inquiries, offers, and related services. Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help. Consent is not a condition of purchase.
+            <span class="consent-links">View our <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms &amp; Conditions</a>.</span>
+          </span>
         </label>
       </div>
       <div class="form-nav">
@@ -738,7 +746,10 @@
       <div class="contact-consent">
         <label>
           <input type="checkbox" id="contact-consent" name="consent" required>
-          I agree to receive recurring marketing text messages from Blue Bird Properties LLC regarding real estate opportunities, property inquiries, offers, and related services. Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help. Consent is not a condition of purchase. View our <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms &amp; Conditions</a>.
+          <span class="consent-text">
+            I agree to receive recurring marketing text messages from Blue Bird Properties LLC regarding real estate opportunities, property inquiries, offers, and related services. Message frequency varies. Message and data rates may apply. Reply STOP to opt out and HELP for help. Consent is not a condition of purchase.
+            <span class="consent-links">View our <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms &amp; Conditions</a>.</span>
+          </span>
         </label>
       </div>
       <button class="btn-contact" type="submit">Send Message</button>
